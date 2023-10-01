@@ -42,19 +42,19 @@ class ClockWork(Visual):
         """Start function"""
         self.switch = False
 
-    def coords_of_number(self, value, one, two, three) -> None:
+    def coord_of_number(self, value, one, two, three) -> None:
         """Numeric coordinates"""
         self.number(value[0], one, three)
         self.number(value[1], two, three)
 
     def command_time(self) -> None:
         """System time function"""
-        coords = (85, 101, 45, 61, 5, 21, 10)
+        coord = (85, 101, 45, 61, 5, 21, 10)
 
         while not self.switch:
-            self.coords_of_number(f'{datetime.now():%S}', coords[0], coords[1], coords[6])
-            self.coords_of_number(f'{datetime.now():%M}', coords[2], coords[3], coords[6])
-            self.coords_of_number(f'{datetime.now():%H}', coords[4], coords[5], coords[6])
+            self.coord_of_number(f'{datetime.now():%S}', coord[0], coord[1], coord[6])
+            self.coord_of_number(f'{datetime.now():%M}', coord[2], coord[3], coord[6])
+            self.coord_of_number(f'{datetime.now():%H}', coord[4], coord[5], coord[6])
 
     def main(self) -> None:
         """Entry point"""

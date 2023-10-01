@@ -19,15 +19,15 @@ class Visual:
     @staticmethod
     def number(value, x, y) -> None:
         """Visualization function"""
-        coords = (39, 79, 13, 17)
+        coord = (39, 79, 13, 17)
 
-        goto(coords[0], coords[2])
+        goto(coord[0], coord[2])
         color.print(settings[0] + '██')
-        goto(coords[0], coords[3])
+        goto(coord[0], coord[3])
         color.print(settings[0] + '██')
-        goto(coords[1], coords[2])
+        goto(coord[1], coord[2])
         color.print(settings[0] + '██')
-        goto(coords[1], coords[3])
+        goto(coord[1], coord[3])
         color.print(settings[0] + '██')
 
         if int(value) == 0:
