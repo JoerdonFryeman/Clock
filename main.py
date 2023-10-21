@@ -21,31 +21,31 @@ class ClockWork(Visual):
         self.settings = settings
 
     @staticmethod
-    def press_release(value) -> None:
+    def press_symbol(value) -> None:
         """Increases or decreases transparency"""
         for i in range(value):
             press_and_release("-")
 
-    def consistency(self) -> None:
+    def get_consistency(self) -> None:
         """Passes the transparency level value as an argument"""
         press('ctrl+shift')
-        self.press_release(int(self.settings[1]))
+        self.press_symbol(int(self.settings[1]))
         release('ctrl+shift')
 
-    def breaker(self) -> None:
+    def break_function(self) -> None:
         """Exit function"""
         input()
         self.switch = True
         press_and_release('enter')
 
-    def runner(self) -> None:
+    def run_function(self) -> None:
         """Start function"""
         self.switch = False
 
     def coord_of_number(self, value, one, two, three) -> None:
         """Numeric coordinates"""
-        self.number(value[0], one, three)
-        self.number(value[1], two, three)
+        self.get_graphic_number(value[0], one, three)
+        self.get_graphic_number(value[1], two, three)
 
     def command_time(self) -> None:
         """System time function"""
@@ -59,10 +59,10 @@ class ClockWork(Visual):
     def main(self) -> None:
         """Entry point"""
         system('cls')
-        self.consistency()
-        Thread(target=self.runner).start()
+        self.get_consistency()
+        Thread(target=self.run_function).start()
         Thread(target=self.command_time).start()
-        Thread(target=self.breaker).start()
+        Thread(target=self.break_function).start()
         input()
         sleep(0.3)
 

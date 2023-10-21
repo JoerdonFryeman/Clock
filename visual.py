@@ -17,7 +17,7 @@ class Visual:
     """Visualization class"""
 
     @staticmethod
-    def number(value, x, y) -> None:
+    def get_graphic_number(value, x, y) -> None:
         """Visualization function"""
         coord = (39, 79, 13, 17)
 
