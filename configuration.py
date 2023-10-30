@@ -5,7 +5,7 @@ from rich.console import Console
 
 class Configuration:
     hide()
-    color = Console()
+    console_color = Console()
     title("Электроника 54")
 
     try:
