@@ -1,5 +1,4 @@
 from bext import goto
-from time import sleep
 from datetime import datetime
 from keyboard import press_and_release
 from configuration import Configuration
@@ -40,7 +39,6 @@ class ClockWork(Configuration):
             self.coord_of_number(f'{datetime.now():%S}', coordinates[0], coordinates[1], coordinates[6])
             self.coord_of_number(f'{datetime.now():%M}', coordinates[2], coordinates[3], coordinates[6])
             self.coord_of_number(f'{datetime.now():%H}', coordinates[4], coordinates[5], coordinates[6])
-            sleep(0.67)
 
     def get_graphic_number(self, value, x, y):
         """Visualization function"""
