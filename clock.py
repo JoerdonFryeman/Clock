@@ -8,15 +8,13 @@ class ClockWork(Configuration):
     switch = False
 
     @classmethod
-    def break_function(cls):
-        """Exit function"""
+    def break_function(cls) -> None:
         input()
         cls.switch = True
         press_and_release('enter')
 
     @classmethod
-    def run_function(cls):
-        """Start function"""
+    def run_function(cls) -> None:
         cls.switch = False
 
     def coord_of_number(self, value, one, two, three):
@@ -42,6 +40,26 @@ class ClockWork(Configuration):
 
     def get_graphic_number(self, value, x, y):
         """Visualization function"""
+
+        # if self.width == 120 and self.height == 30:
+        coordinates = (39, 79, 13, 17)
+        # else:
+        #     if self.width < 237 and self.height < 66:
+        #         coordinates = (int(self.width // 2.75), int(self.width // 1.66),
+        #                        int(self.height // 2.13), int(self.height // 1.80))
+        #     else:
+        #         coordinates = (int(self.width // 2.85), int(self.width // 1.69),
+        #                        int(self.height // 2.35), int(self.height // 1.94))
+
+        goto(coordinates[0], coordinates[2])
+        self.console_color.print(self.first_color + '██')
+        goto(coordinates[0], coordinates[3])
+        self.console_color.print(self.first_color + '██')
+        goto(coordinates[1], coordinates[2])
+        self.console_color.print(self.first_color + '██')
+        goto(coordinates[1], coordinates[3])
+        self.console_color.print(self.first_color + '██')
+
         if int(value) == 0:
             goto(x, y)
             self.console_color.print(self.first_color + '██████████████')
@@ -281,22 +299,3 @@ class ClockWork(Configuration):
             self.console_color.print(self.first_color + '██░░░░░░░░░░██')
             goto(x, y + 10)
             self.console_color.print(self.first_color + '██████████████')
-
-        # if self.width == 120 and self.height == 30:
-        coordinates = (39, 79, 13, 17)
-        # else:
-        #     if self.width < 237 and self.height < 66:
-        #         coordinates = (int(self.width // 2.75), int(self.width // 1.66),
-        #                        int(self.height // 2.13), int(self.height // 1.80))
-        #     else:
-        #         coordinates = (int(self.width // 2.85), int(self.width // 1.69),
-        #                        int(self.height // 2.35), int(self.height // 1.94))
-
-        goto(coordinates[0], coordinates[2])
-        self.console_color.print(self.first_color + '██')
-        goto(coordinates[0], coordinates[3])
-        self.console_color.print(self.first_color + '██')
-        goto(coordinates[1], coordinates[2])
-        self.console_color.print(self.first_color + '██')
-        goto(coordinates[1], coordinates[3])
-        self.console_color.print(self.first_color + '██')
