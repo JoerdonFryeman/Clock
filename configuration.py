@@ -1,10 +1,10 @@
 from ast import literal_eval
-from bext import hide, title
+from bext import hide_cursor, title
 from rich.console import Console
 
 
 class Configuration:
-    hide()
+    hide_cursor()
     console_color = Console()
     title("Электроника 54")
 
