@@ -6,7 +6,7 @@
 
 You can start the project in your console
 ``` code
-git clone https://github.com/Kepler54/Clock
+git clone https://github.com/KeplerCoder/Clock
 cd Clock
 ```
 ### For Windows
