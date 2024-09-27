@@ -5,18 +5,18 @@
 ![Clock](https://github.com/Kepler54/Clock/assets/126917322/aa15b6ad-d884-4a4a-9532-81bb6ccc9772)
 
 You can start the project in your console
-``` code
+``` console
 git clone https://github.com/KeplerCoder/Clock
 cd Clock
 ```
 ### For Windows
 Create and activate a virtual environment
-``` code
+``` console
 python -m venv venv
 venv\Scripts\activate
 ```
 Install the requirements and run the script
-``` code
+``` console
 python.exe -m pip install --upgrade pip
 pip install -r requirements_for_windows.txt
 python main.py
