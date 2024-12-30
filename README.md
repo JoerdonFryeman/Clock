@@ -9,7 +9,9 @@ You can start the project in your console
 git clone https://github.com/JoerdonFryeman/Clock
 cd Clock
 ```
+
 ### For Windows
+
 Create and activate a virtual environment
 ``` console
 python -m venv venv
@@ -21,12 +23,20 @@ python.exe -m pip install --upgrade pip
 pip install -r requirements_for_windows.txt
 python main.py
 ```
+
 ### Settings
+
 Some program settings can be specified in the settings.spec file.
 
 Change color of Clock: black, red, green, yellow, blue, purple, cyan, white;
 Change the level of transparency.
 
 The default settings can be restored by deleting the settings.spec file and restarting the program.
+
+### License
+
+This project is being developed under the MIT license.
+
 ### Support with Bitcoin
+
 bc1qewfgtrrg2gqgtvzl5d2pr9pte685pp5n3g6scy
