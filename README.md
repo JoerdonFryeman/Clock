@@ -1,13 +1,34 @@
 # Clock
 
-### A simple console retro clock for Windows.
+A simple console retro clock with system information.
 
-![Clock](https://github.com/JoerdonFryeman/Clock/assets/126917322/aa15b6ad-d884-4a4a-9532-81bb6ccc9772)
+## Project structure
 
-You can start the project in your console
+- `main.py`: The main module to run the program.
+- `clock.py`: Clock symbols and system info generation and animation module.
+- `configuration.py`: Module for loading program configuration data.
+- `clock_config.json`: Program settings and configuration file.
+- `digits.json`: A set of images of digits.
+- `logos.json`: A set of images of logos.
+
+## Requirements
+
+- Python 3
+- windows-curses 2.4.1a1 (for Windows)
+
+## Installation
+
+Download the project
 ``` console
 git clone https://github.com/JoerdonFryeman/Clock
 cd Clock
+```
+
+### For Linux
+
+Just run the script
+``` console
+python3 main.py
 ```
 
 ### For Windows
@@ -24,14 +45,23 @@ pip install -r requirements_for_windows.txt
 python main.py
 ```
 
-### Settings
+## Startup
 
-Some program settings can be specified in the settings.spec file.
+You can start the project in your console
+``` console
+python3 main.py
+```
 
-Change color of Clock: black, red, green, yellow, blue, purple, cyan, white;
-Change the level of transparency.
+## Settings
 
-The default settings can be restored by deleting the settings.spec file and restarting the program.
+Some program settings can be specified in the clock_config.json file.
+
+- You can change the color of the clock, logo, or system info: BLACK, BLUE, CYAN, GREEN, MAGENTA, RED, WHITE, YELLOW.
+- With true or false enable or disable system info.
+- Change the system info language to Russian “ru” or English “us”.
+- Create your own logo (11x14), add it to the logos.json file and enter its name in the clock_config.json file in the "logo_name" key.
+
+The default settings can be restored by deleting the clock_config.json file and restarting the program.
 
 ### License
 
