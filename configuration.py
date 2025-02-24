@@ -12,6 +12,14 @@ try:
 except ModuleNotFoundError:
     print('\nДля Windows необходимо установить файл requirements_for_windows.txt!\n')
 
+try:
+    directories: tuple[str, str] = ('config_files', 'icons')
+    for i in range(len(directories)):
+        os.mkdir(directories[i])
+        i += 1
+except FileExistsError:
+    pass
+
 
 class Configuration:
     """
@@ -24,6 +32,7 @@ class Configuration:
         "system_info_color": "GREEN",
         "logo_color": "BLUE",
         "system_info": True,
+        "temperature_info": True,
         "language": "ru",
         "logo_name": ""
     }
@@ -56,7 +65,10 @@ class Configuration:
                 print(f'\nFailed to create file "{config_name}.json" due to {e}')
             return cls.json_data
 
-    __slots__ = ('variables', 'digits_color', 'info_color', 'logo_color', 'system_info', 'language', 'logo_name')
+    __slots__ = (
+        'variables', 'digits_color', 'info_color', 'logo_color',
+        'system_info', 'temperature_info', 'language', 'logo_name'
+    )
 
     def __init__(self):
         self.variables = self.get_json_data('clock_config')
@@ -65,6 +77,7 @@ class Configuration:
             self.info_color = self.variables['system_info_color']
             self.logo_color = self.variables['logo_color']
             self.system_info = self.variables['system_info']
+            self.temperature_info = self.variables['temperature_info']
             self.language = self.variables['language']
             self.logo_name = self.variables['logo_name']
         except TypeError:
