@@ -8,15 +8,17 @@ class Settings(Configuration):
     """Класс общих методов и параметров программы."""
 
     __slots__ = (
-        'logo_y', 'logo_x', 'name_y', 'name_x', 'info_y', 'info_x', 'info_temp_y', 'info_temp_x',
-        'git_y', 'git_x', 'example_y', 'example_x', 'digits_y', 'digits_x', 'colors_dict'
+        'not_found_emoji', 'logo_y', 'logo_x', 'name_y', 'name_x', 'info_y', 'info_x', 'info_temp_y',
+        'info_temp_x', 'git_y', 'git_x', 'example_y', 'example_x', 'digits_y', 'digits_x', 'colors_dict'
     )
 
     def __init__(
-            self, logo_y=1, logo_x=6, name_y=1, name_x=77, info_y=1, info_x=31, info_temp_y=2, info_temp_x=77, git_y=10,
+            self, logo_y=1, logo_x=5, name_y=1, name_x=77, info_y=1, info_x=31, info_temp_y=2, info_temp_x=77, git_y=10,
             git_x=31, example_y=10, example_x=77, digits_y=13, digits_x=((1, 17, 34), (39, 55, 72), (77, 93, 72))
     ):
         super().__init__()
+        self.not_found_emoji = '¯\\_(`-`)_/¯'
+
         self.logo_y: int = logo_y
         self.logo_x: int = logo_x
 
@@ -87,7 +89,7 @@ class Logo(Settings):
             self.visualize_symbol(stdscr, len(logo), self.logo_y, self.logo_x, logo, self.paint(self.logo_color))
         except KeyError:
             try:
-                stdscr.addstr(self.logo_y + 5, self.logo_x + 5, '¯\\_(`-`)_/¯', self.paint(self.logo_color))
+                stdscr.addstr(self.logo_y + 5, self.logo_x + 5, self.not_found_emoji, self.paint(self.logo_color))
             except error:
                 pass
 
@@ -95,14 +97,51 @@ class Logo(Settings):
 class Info(Settings):
     """Класс получения и отображения информации о системе."""
 
-    now = datetime.now()
-    date = f'{now.day}.{now.month}.{now.year}'
+    @staticmethod
+    def get_date_now() -> str:
+        now = datetime.now()
+        day, month, year = now.day, now.month, now.year
+        day_and_month = lambda x: x if x > 9 else f'0{x}'
+        date = f'{day_and_month(day)}.{day_and_month(month)}.{year}'
+        return date
 
     @staticmethod
-    def verify_system_info(system_info) -> str:
-        if system_info:
-            return system_info
-        return '¯\\_(`-`)_/¯'
+    def verify_language(language):
+        if language not in ['ru', 'us']:
+            language = 'ru'
+        return language
+
+    @staticmethod
+    def get_system_info() -> tuple:
+        login = os.getlogin()
+        node = platform.node()
+        system = platform.system()
+        release = platform.release()
+        architecture = platform.architecture()[0]
+        machine = platform.machine()
+        processor = platform.processor()
+        host_by_name = socket.gethostbyname(platform.node())
+        return login, node, system, release, architecture, machine, processor, host_by_name
+
+    @staticmethod
+    def verify_hardware(first: str, second: str):
+        temperature = psutil.sensors_temperatures()
+        try:
+            if first in temperature:
+                return temperature.get(first, [])[0].current
+            elif second in temperature:
+                return temperature.get(second, [])[0].current
+            return temperature.get('acpitz', [])[0].current
+        except (IndexError, TypeError):
+            pass
+
+    def get_temperature_info(self):
+        cpu = self.verify_hardware('k10temp', 'coretemp')
+        gpu = self.verify_hardware('amdgpu', 'nvidia')
+        ram = self.verify_hardware('spd5118', '')
+        storage = self.verify_hardware('nvme', '')
+        motherboard = self.verify_hardware('acpitz', '')
+        return cpu, gpu, ram, storage, motherboard
 
     def create_system_info(self, language='ru') -> dict[str]:
         """
@@ -111,91 +150,60 @@ class Info(Settings):
         :param language: Язык отображения информации о системе.
         :return: Словарь с информацией о системе.
         """
-        get_login = os.getlogin()
-        platform_node = platform.node()
-        platform_system = platform.system()
-        platform_release = platform.release()
-        platform_architecture = platform.architecture()[0]
-        platform_machine = platform.machine()
-        platform_processor = platform.processor()
-        socket_gethostbyname = socket.gethostbyname(platform.node())
+        system_info = self.get_system_info()
 
-        verify_login = lambda: get_login if len(get_login) < 15 else 'user'
-        verify_platform = lambda: platform_node if len(platform_node) < 15 else 'computer'
+        verify_info = lambda x: x if x else self.not_found_emoji
+        verify_login = lambda: system_info[0] if len(system_info[0]) < 15 else 'user'
+        verify_platform = lambda: system_info[1] if len(system_info[1]) < 15 else 'computer'
+
         info = {
             "ru": {
-                "": self.verify_system_info(f"{verify_login()}@{verify_platform()}"),
-                "─": "─" * (len(self.verify_system_info(f"{verify_login()}@{verify_platform()}")) - 1),
-                "ОС: ": self.verify_system_info(platform_system),
-                "Версия ОС: ": self.verify_system_info(platform_release),
-                "Архитектура: ": self.verify_system_info(platform_architecture),
-                "Машина: ": self.verify_system_info(platform_machine),
-                "Процессор: ": self.verify_system_info(platform_processor),
-                "IP-адрес: ": self.verify_system_info(socket_gethostbyname)
+                "": verify_info(f"{verify_login()}@{verify_platform()}"),
+                "─": "─" * (len(verify_info(f"{verify_login()}@{verify_platform()}")) - 1),
+                "ОС: ": verify_info(system_info[2]),
+                "Версия ОС: ": verify_info(system_info[3]),
+                "Архитектура: ": verify_info(system_info[4]),
+                "Машина: ": verify_info(system_info[5]),
+                "Процессор: ": verify_info(system_info[6]),
+                "IP-адрес: ": verify_info(system_info[7])
             },
-            "en": {
-                "": self.verify_system_info(f"{verify_login()}@{verify_platform()}"),
-                "─": "─" * (len(self.verify_system_info(f"{verify_login()}@{verify_platform()}")) - 1),
-                "OS: ": self.verify_system_info(platform_system),
-                "OS Version: ": self.verify_system_info(platform_release),
-                "Architecture: ": self.verify_system_info(platform_architecture),
-                "Machine: ": self.verify_system_info(platform_machine),
-                "Processor: ": self.verify_system_info(platform_processor),
-                "IP address: ": self.verify_system_info(socket_gethostbyname)
+            "us": {
+                "": verify_info(f"{verify_login()}@{verify_platform()}"),
+                "─": "─" * (len(verify_info(f"{verify_login()}@{verify_platform()}")) - 1),
+                "OS: ": verify_info(system_info[2]),
+                "OS Version: ": verify_info(system_info[3]),
+                "Architecture: ": verify_info(system_info[4]),
+                "Machine: ": verify_info(system_info[5]),
+                "Processor: ": verify_info(system_info[6]),
+                "IP address: ": verify_info(system_info[7])
             }
         }
-        if language not in ['ru', 'en']:
-            language = 'ru'
-        return info[language]
-
-    @staticmethod
-    def verify_hardware(temperature, hw_first: str, hw_second: str) -> str:
-        if hw_first in temperature:
-            return hw_first
-        elif hw_second in temperature:
-            return hw_second
-        raise error
-
-    def get_temperature_info(self):
-        temperature = psutil.sensors_temperatures()
-        cpu = temperature.get(self.verify_hardware(temperature, 'k10temp', 'coretemp'), [])[0].current
-        gpu = temperature.get(self.verify_hardware(temperature, 'amdgpu', 'nvidia'), [])[0].current
-        ram = temperature.get('spd5118', [])[0].current
-        storage = temperature.get(self.verify_hardware(temperature, 'nvme', 'sd'), [])[0].current
-        motherboard = temperature.get('acpitz', [])[0].current
-        return cpu, gpu, ram, storage, motherboard
+        return info[self.verify_language(language)]
 
     def create_temperature_info(self, language='ru') -> dict[str]:
         temperature = self.get_temperature_info()
+        verify_temperature_info = lambda x: f'{x}°C' if x else self.not_found_emoji
         info = {
             "ru": {
-                "─": "─" * (len(self.date) + 16),
-                "Темп. процессора: ": f"{self.verify_system_info(temperature[0]):.1f}°C",
-                "Темп. видеокарты: ": f"{self.verify_system_info(temperature[1]):.1f}°C",
-                "Темп. оп. памяти: ": f"{self.verify_system_info(temperature[2]):.1f}°C",
-                "Темп. накопителя: ": f"{self.verify_system_info(temperature[3]):.1f}°C",
-                "Темп. мат. платы: ": f"{self.verify_system_info(temperature[4]):.1f}°C"
+                "─": "─" * 26,
+                "Темп. процессора: ": verify_temperature_info(temperature[0]),
+                "Темп. видеокарты: ": verify_temperature_info(temperature[1]),
+                "Темп. оп. памяти: ": verify_temperature_info(temperature[2]),
+                "Темп. накопителя: ": verify_temperature_info(temperature[3]),
+                "Темп. мат. платы: ": verify_temperature_info(temperature[4])
             },
             "us": {
-                "─": "─" * (len(self.date) + 16),
-                "CPU temperature: ": f"{self.verify_system_info(temperature[0]):.1f}°C",
-                "GPU temperature: ": f"{self.verify_system_info(temperature[1]):.1f}°C",
-                "RAM temperature: ": f"{self.verify_system_info(temperature[2]):.1f}°C",
-                "Storage temper.: ": f"{self.verify_system_info(temperature[3]):.1f}°C",
-                "Mot. b. temper.: ": f"{self.verify_system_info(temperature[4]):.1f}°C"
+                "─": "─" * 26,
+                "CPU temperature: ": verify_temperature_info(temperature[0]),
+                "GPU temperature: ": verify_temperature_info(temperature[1]),
+                "RAM temperature: ": verify_temperature_info(temperature[2]),
+                "Storage temper.: ": verify_temperature_info(temperature[3]),
+                "Mot. b. temper.: ": verify_temperature_info(temperature[4])
             }
         }
-        if language not in ['ru', 'us']:
-            language = 'ru'
-        return info[language]
+        return info[self.verify_language(language)]
 
-    def verify_name_length(self) -> int:
-        length = len(self.date)
-        if 7 < length < 12:
-            return {11: lambda: 79, 10: lambda: 80, 9: lambda: 81, 8: lambda: 82}[length]()
-        raise KeyError(f'Ошибка текущей даты: "{self.date}"!')
-
-    def visualize_info(self, stdscr) -> None:
+    def visualize_system_info(self, stdscr) -> None:
         """
         Метод визуализирует информацию о системе.
 
@@ -203,30 +211,32 @@ class Info(Settings):
         """
         system_info_data: dict[str] = self.create_system_info(self.language).items()
         system_info: list[str] = [f"{key}{value}" for key, value in system_info_data]
-        stdscr.addstr(self.git_y, self.git_x, 'https://github.com/JoerdonFryeman/Clock', self.paint(self.info_color))
-        if self.temperature_info:
-            temperature_info_data: dict[str] = self.create_temperature_info(self.language).items()
-            temperature_info: list[str] = [f"{key}{value}" for key, value in temperature_info_data]
-            for i in range(len(temperature_info_data)):
-                try:
-                    stdscr.addstr(
-                        self.info_temp_y + i, self.info_temp_x, str(temperature_info[i]),
-                        self.paint(self.info_color)
-                    )
-                except error:
-                    pass
-        try:
-            name_x = lambda: self.name_x if self.temperature_info else self.verify_name_length()
-            stdscr.addstr(self.name_y, name_x(), f'{self.date} | ЭЛЕКТРОНИКА 54', self.paint(self.digits_color))
-        except error:
-            pass
         for i in range(len(system_info_data)):
             try:
+                stdscr.addstr(self.info_y + i, self.info_x, str(system_info[i]), self.paint(self.info_color))
+            except error:
+                pass
+        temperature_info_data: dict[str] = self.create_temperature_info(self.language).items()
+        temperature_info: list[str] = [f"{key}{value}" for key, value in temperature_info_data]
+        for i in range(len(temperature_info_data)):
+            try:
                 stdscr.addstr(
-                    self.info_y + i, self.info_x, str(system_info[i]), self.paint(self.info_color)
+                    self.info_temp_y + i, self.info_temp_x, str(temperature_info[i]),
+                    self.paint(self.info_color)
                 )
             except error:
                 pass
+        try:
+            stdscr.addstr(
+                self.name_y, self.name_x,
+                f'{self.get_date_now()} | ЭЛЕКТРОНИКА 54', self.paint(self.digits_color)
+            )
+            stdscr.addstr(
+                self.git_y, self.git_x,
+                'https://github.com/JoerdonFryeman/Clock', self.paint(self.info_color)
+            )
+        except error:
+            pass
 
     def visualize_colors_example(self, stdscr) -> None:
         """
@@ -237,7 +247,7 @@ class Info(Settings):
         for i in range(6):
             init_pair(1 + i, self.verify_color(list(self.colors_dict.keys())[0 + i]), -1)
             try:
-                stdscr.addstr(self.example_y, self.example_x + i * 4, '████', color_pair(1 + i))
+                stdscr.addstr(self.example_y, self.example_x + i * 5, '█████', color_pair(1 + i))
             except error:
                 pass
 
@@ -254,8 +264,10 @@ class Clock(Settings):
         color = self.paint(self.digits_color)
         digits_height = lambda: self.digits_y if self.system_info else self.digits_y - 6
         y, x = digits_height(), self.digits_x
+
         digits = self.get_json_data('digits')
         current_time = f'{datetime.now():%H}', f'{datetime.now():%M}', f'{datetime.now():%S}'
+
         for i in range(3):
             self.visualize_symbol(stdscr, len(digits), y, x[i - 1][0], digits[current_time[i - 1][0]], color)
             self.visualize_symbol(stdscr, len(digits), y, x[i - 1][1], digits[current_time[i - 1][1]], color)
@@ -275,14 +287,17 @@ class RunProgram(Clock, Logo, Info):
         for _ in range(1_000_000_000):
             start_time = time()
             curs_set(False), use_default_colors()
+
             if self.system_info:
                 self.visualize_logo(stdscr)
-                self.visualize_info(stdscr)
+                self.visualize_system_info(stdscr)
                 self.visualize_colors_example(stdscr)
             self.visualize_digits(stdscr)
+
             stdscr.refresh()
             elapsed_time = time() - start_time
             time_to_sleep = 0.25 - elapsed_time
+
             if time_to_sleep > 0:
                 sleep(time_to_sleep)
 

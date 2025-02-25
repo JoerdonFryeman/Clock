@@ -3,7 +3,6 @@
     "system_info_color": "GREEN",
     "logo_color": "BLUE",
     "system_info": true,
-    "temperature_info": true,
     "language": "ru",
     "logo_name": ""
 }

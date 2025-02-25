@@ -32,7 +32,6 @@ class Configuration:
         "system_info_color": "GREEN",
         "logo_color": "BLUE",
         "system_info": True,
-        "temperature_info": True,
         "language": "ru",
         "logo_name": ""
     }
@@ -66,8 +65,7 @@ class Configuration:
             return cls.json_data
 
     __slots__ = (
-        'variables', 'digits_color', 'info_color', 'logo_color',
-        'system_info', 'temperature_info', 'language', 'logo_name'
+        'variables', 'digits_color', 'info_color', 'logo_color', 'system_info', 'language', 'logo_name'
     )
 
     def __init__(self):
@@ -77,7 +75,6 @@ class Configuration:
             self.info_color = self.variables['system_info_color']
             self.logo_color = self.variables['logo_color']
             self.system_info = self.variables['system_info']
-            self.temperature_info = self.variables['temperature_info']
             self.language = self.variables['language']
             self.logo_name = self.variables['logo_name']
         except TypeError:
