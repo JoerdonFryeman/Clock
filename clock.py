@@ -224,20 +224,27 @@ class TemperatureModule(Base):
             except error:
                 pass
 
+    def calculate_average_temperature(self) -> int | float | None:
+        """Вычисляет среднюю температуру из кортежа температур.
+
+        :return: Средняя температура. Если допустимых значений нет, возвращает 0.
+        """
+        valid_temperatures = [i for i in self.temperature if isinstance(i, (int, float))]
+
+        if not valid_temperatures:
+            return None
+        return sum(valid_temperatures) / len(valid_temperatures)
+
     def verify_temperature_indicator(self, stdscr) -> None:
-        if 0 < self.temperature[0] < 40:
-            self.visualize_temperature_indicator(stdscr, 1)
-        elif 40 <= self.temperature[0] < 45:
-            self.visualize_temperature_indicator(stdscr, 2)
-        elif 45 <= self.temperature[0] < 50:
-            self.visualize_temperature_indicator(stdscr, 3)
-        elif 50 <= self.temperature[0] < 55:
-            self.visualize_temperature_indicator(stdscr, 4)
-        elif 55 <= self.temperature[0] < 60:
-            self.visualize_temperature_indicator(stdscr, 5)
-        elif 60 <= self.temperature[0] < 100:
-            self.visualize_temperature_indicator(stdscr, 6)
-        else:
+        average_temperature = self.calculate_average_temperature()
+        thresholds = ((0, 40, 1), (40, 45, 2), (45, 50, 3), (50, 55, 4), (55, 60, 5), (60, 100, 6))
+        try:
+            for lower, upper, indicator in thresholds:
+                if lower <= average_temperature < upper:
+                    self.visualize_temperature_indicator(stdscr, indicator)
+                    return
+            self.visualize_temperature_indicator(stdscr, 0)
+        except TypeError:
             self.visualize_temperature_indicator(stdscr, 0)
 
 
