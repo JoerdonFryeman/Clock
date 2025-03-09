@@ -22,10 +22,7 @@ except FileExistsError:
 
 
 class Configuration:
-    """
-    Класс Configuration используется для чтения и управления настройками конфигурации из JSON-файла.
-    Он задает различные свойства, такие как цвет, параметры матрицы и отображаемые предложения, связанные с Neo.
-    """
+    """Класс Configuration используется для чтения и управления настройками конфигурации из JSON-файла."""
 
     json_data = {
         "digits_color": "MAGENTA",
@@ -84,7 +81,6 @@ class Configuration:
     def verify_color(color):
         """
         Метод проверяет настройку цвета из конфигурации.
-
         :return: COLOR_*: Цветовая константа, соответствующая цветовой конфигурации.
         """
         dictionary = {
@@ -98,7 +94,6 @@ class Configuration:
     def verify_os(self) -> str:
         """
         Метод проверяет на какой ОС запускается программа.
-
         :return: Возвращает имя ОС.
         """
         if self.logo_name != '':

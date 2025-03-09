@@ -1,6 +1,6 @@
 # Clock
 
-A simple console retro clock with system information.
+A simple console retro clock with system and temperature information.
 
 ![Clock](https://github.com/user-attachments/assets/f4046a84-0518-4337-80e2-467528d01b1b)
 
@@ -16,42 +16,40 @@ A simple console retro clock with system information.
 ## Requirements
 
 - Python 3
+- psutil 7.0.0
 - windows-curses 2.4.1a1 (for Windows)
 
 ## Installation
 
 Download the project
+
 ``` console
 git clone https://github.com/JoerdonFryeman/Clock
 cd Clock
 ```
 
+Create a virtual environment and install the requirements
+
 ### For Linux
 
-Just run the script
 ``` console
-python3 main.py
+python -m venv venv && source venv/bin/activate
+pip install --upgrade pip && pip install -r requirements_for_linux.txt
 ```
 
 ### For Windows
 
-Create and activate a virtual environment
 ``` console
-python -m venv venv
-venv\Scripts\activate
-```
-Install the requirements and run the script
-``` console
-python.exe -m pip install --upgrade pip
-pip install -r requirements_for_windows.txt
-python main.py
+python -m venv venv && venv\Scripts\activate
+python.exe -m pip install --upgrade pip && pip install -r requirements_for_windows.txt
 ```
 
 ## Startup
 
 You can start the project in your console
+
 ``` console
-python3 main.py
+python main.py
 ```
 
 ## Settings
@@ -59,7 +57,7 @@ python3 main.py
 Some program settings can be specified in the clock_config.json file.
 
 - You can change the color of the clock, logo, or system info: BLACK, BLUE, CYAN, GREEN, MAGENTA, RED, WHITE, YELLOW.
-- With true or false enable or disable system info.
+- With true or false enable or disable system and temperature info (temperature info is only available on Linux).
 - Change the system info language to Russian “ru” or English “us”.
 - Create your own logo (11x14), add it to the logos.json file and enter its name in the clock_config.json file in the "logo_name" key.
 
