@@ -68,9 +68,9 @@ class Base(Configuration):
         Метод проверяет язык и возвращает 'ru', если язык не поддерживается.
 
         :param language: Язык для проверки.
-        :return: Поддерживаемый язык ('ru' или 'us').
+        :return: Поддерживаемый язык ('ru' или 'en').
         """
-        if language not in ['ru', 'us']:
+        if language not in ['ru', 'en']:
             language = 'ru'
         return language
 
@@ -79,7 +79,7 @@ class Base(Configuration):
         """
         Метод отображает символы на экране.
 
-        :param stdscr: Объект курсор окна.
+        :param stdscr: Объект стандартного экрана для отображения символов.
         :param height: Высота символа.
         :param y: Координаты расположения по вертикали.
         :param x: Координаты расположения по горизонтали.
@@ -189,7 +189,7 @@ class InfoModule(Base):
         """
         Создает словарь с информацией о системе на заданном языке.
 
-        :param language: Язык для отображения информации ('ru' или 'us').
+        :param language: Язык для отображения информации ('ru' или 'en').
         :return: Словарь с информацией о системе на выбранном языке.
         """
         login, node = self.verify_info(self.info[0]), self.verify_info(self.info[1])
@@ -202,9 +202,9 @@ class InfoModule(Base):
                 "Архитектура: ": self.verify_info(self.info[4]),
                 "Машина: ": self.verify_info(self.info[5]),
                 "Процессор: ": self.verify_info(self.info[6]),
-                "IP-адрес: ": self.verify_info(self.info[7])
+                "IP-адрес: ": f"{self.verify_info(self.info[7])}{' ' * 9}"
             },
-            "us": {
+            "en": {
                 "": f'{self.verify_info(f"{login}")}@{self.verify_info(f"{node}")}',
                 "─": "─" * (len(f'{self.verify_info(f"{login}")}@{self.verify_info(f"{node}")}') - 1),
                 "OS: ": self.verify_info(self.info[2]),
@@ -212,7 +212,7 @@ class InfoModule(Base):
                 "Architecture: ": self.verify_info(self.info[4]),
                 "Machine: ": self.verify_info(self.info[5]),
                 "Processor: ": self.verify_info(self.info[6]),
-                "IP address: ": self.verify_info(self.info[7])
+                "IP address: ": f"{self.verify_info(self.info[7])}{' ' * 9}"
             }
         }
         return info[self.verify_language(language)]
@@ -272,26 +272,26 @@ class TemperatureModule(Base):
         """
         Создает словарь с информацией о температуре на заданном языке.
 
-        :param language: Язык для отображения информации ('ru' или 'us').
+        :param language: Язык для отображения информации ('ru' или 'en').
         :return: Словарь с информацией о температуре на выбранном языке.
         """
         verify_temperature_info = lambda x: f'{x:.1f}°C' if x else self.error_emoji
         info = {
             "ru": {
                 "─": "─" * 26,
-                "Темп-ра процессора: ": verify_temperature_info(self.temperature[0]),
-                "Темп-ра видеокарты: ": verify_temperature_info(self.temperature[1]),
-                "Темп-ра оп. памяти: ": verify_temperature_info(self.temperature[2]),
-                "Темп-ра накопителя: ": verify_temperature_info(self.temperature[3]),
-                "Темп-ра мат. платы: ": verify_temperature_info(self.temperature[4])
+                "Температура ЦПУ: ": verify_temperature_info(self.temperature[0]),
+                "Температура ГПУ: ": verify_temperature_info(self.temperature[1]),
+                "Температура ОЗУ: ": verify_temperature_info(self.temperature[2]),
+                "Тмп. накопителя: ": verify_temperature_info(self.temperature[3]),
+                "Тмп. мат. платы: ": verify_temperature_info(self.temperature[4])
             },
-            "us": {
+            "en": {
                 "─": "─" * 26,
                 "CPU temperature: ": verify_temperature_info(self.temperature[0]),
                 "GPU temperature: ": verify_temperature_info(self.temperature[1]),
                 "RAM temperature: ": verify_temperature_info(self.temperature[2]),
-                "Storage temper.: ": verify_temperature_info(self.temperature[3]),
-                "Mot. b. temper.: ": verify_temperature_info(self.temperature[4])
+                "Storage t.     : ": verify_temperature_info(self.temperature[3]),
+                "Motherboard t. : ": verify_temperature_info(self.temperature[4])
             }
         }
         return info[self.verify_language(language)]
