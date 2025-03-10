@@ -2,6 +2,8 @@
 
 A simple console retro clock with system and temperature information.
 
+![Clock](https://github.com/user-attachments/assets/21e51ce6-cbbe-4d37-964a-cfdae99d14f9)
+
 ## Project structure
 
 - `main.py`: The main module to run the program.
