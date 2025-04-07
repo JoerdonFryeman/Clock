@@ -1,6 +1,6 @@
 import os, socket, platform, psutil
 from datetime import datetime
-from configuration import error, init_pair, color_pair, Configuration
+from configuration import error, init_pair, use_default_colors, color_pair, Configuration
 
 
 class Base(Configuration):
@@ -12,8 +12,8 @@ class Base(Configuration):
     )
 
     def __init__(
-            self, logo_y=1, logo_x=5, name_y=1, name_x=77, info_y=1, info_x=31, temp_y=2, temp_x=77, link_y=10,
-            link_x=31, idct_y=10, idct_x=77, dgts_y=14, dgts_x=((1, 17, 34), (39, 55, 72), (77, 93, 72))
+            self, logo_y=0, logo_x=0, name_y=1, name_x=77, info_y=1, info_x=31, temp_y=2, temp_x=77, link_y=10,
+            link_x=31, idct_y=10, idct_x=77, dgts_y=14, dgts_x=((0, 15, 32), (37, 53, 70), (75, 91, 70))
     ):
         super().__init__()
         self.error_emoji = '¯\\_(`-`)_/¯'
@@ -98,9 +98,14 @@ class Base(Configuration):
 
         :param color: Цвет изображения.
         :return: Объект color_pair.
+
+        :raises KeyError: Если указанный цвет не найден в словаре цветов.
         """
-        for i in range(len(list(self.colors_dict.keys()))):
-            init_pair(1 + i, self.verify_color(list(self.colors_dict.keys())[0 + i]), -1)
+        for i, color_name in enumerate(self.colors_dict.keys()):
+            use_default_colors()
+            init_pair(1 + i, self.verify_color(color_name), -1)
+        if color not in self.colors_dict:
+            raise KeyError(f'Цвет "{color}" не найден в доступных цветах!')
         return color_pair(self.colors_dict[color])
 
     def get_info_list(self, function) -> list[str]:
