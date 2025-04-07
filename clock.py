@@ -13,7 +13,7 @@ class Base(Configuration):
 
     def __init__(
             self, logo_y=0, logo_x=0, name_y=1, name_x=77, info_y=1, info_x=31, temp_y=2, temp_x=77, link_y=10,
-            link_x=31, idct_y=10, idct_x=77, dgts_y=14, dgts_x=((0, 15, 32), (37, 53, 70), (75, 91, 70))
+            link_x=31, idct_y=10, idct_x=77, dgts_y=14, dgts_x=((0, 16, 33), (38, 54, 71), (76, 92, 71))
     ):
         super().__init__()
         self.error_emoji = '¯\\_(`-`)_/¯'
