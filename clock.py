@@ -1,6 +1,6 @@
 import os, socket, platform, psutil
 from datetime import datetime
-from configuration import error, init_pair, use_default_colors, color_pair, Configuration
+from configuration import error, init_pair, color_pair, Configuration
 
 
 class Base(Configuration):
@@ -102,7 +102,6 @@ class Base(Configuration):
         :raises KeyError: Если указанный цвет не найден в словаре цветов.
         """
         for i, color_name in enumerate(self.colors_dict.keys()):
-            use_default_colors()
             init_pair(1 + i, self.verify_color(color_name), -1)
         if color not in self.colors_dict:
             raise KeyError(f'Цвет "{color}" не найден в доступных цветах!')

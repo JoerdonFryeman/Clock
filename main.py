@@ -1,6 +1,6 @@
 from clock import LogoModule, InfoModule, TemperatureModule, ClockModule
 from time import sleep, time
-from configuration import curs_set, wrapper
+from configuration import curs_set, use_default_colors, wrapper
 from threading import Thread
 
 
@@ -17,7 +17,7 @@ class RunProgram(ClockModule, TemperatureModule, InfoModule, LogoModule):
         """
         while True:
             start_time = time()
-            curs_set(False)
+            curs_set(False), use_default_colors()
             function(stdscr)
             stdscr.refresh()
             elapsed_time = time() - start_time
