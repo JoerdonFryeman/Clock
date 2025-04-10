@@ -31,7 +31,7 @@ class RunProgram(ClockModule, TemperatureModule, InfoModule, LogoModule):
         :param stdscr: Объект стандартного экрана для отображения информации.
         """
         self.renew()
-        self.get_logo(stdscr), self.get_name_and_link(stdscr), self.visualize_system_info(stdscr)
+        self.get_logo(stdscr), self.display_info(stdscr), self.visualize_system_info(stdscr)
         self.visualize_temperature_info(stdscr), self.verify_temperature_indicator(stdscr)
 
     def get_wrapped_threads(self) -> None:

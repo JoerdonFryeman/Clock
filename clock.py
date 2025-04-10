@@ -7,13 +7,14 @@ class Base(Configuration):
     """Класс общих методов и параметров программы."""
 
     __slots__ = (
-        'error_emoji', 'logo_y', 'logo_x', 'name_y', 'name_x', 'info_y', 'info_x', 'temp_y',
-        'temp_x', 'link_y', 'link_x', 'idct_y', 'idct_x', 'dgts_y', 'dgts_x', 'colors_dict'
+        'error_emoji', 'logo_y', 'logo_x', 'name_y', 'name_x', 'info_y', 'info_x', 'temp_y', 'temp_x', 'version_y',
+        'version_x', 'copy_right_y', 'copy_right_x', 'link_y', 'link_x', 'idct_y', 'idct_x', 'dgts_y', 'dgts_x'
     )
 
     def __init__(
-            self, logo_y=0, logo_x=0, name_y=1, name_x=77, info_y=1, info_x=32, temp_y=2, temp_x=77, link_y=10,
-            link_x=32, idct_y=10, idct_x=77, dgts_y=14, dgts_x=((0, 16, 33), (38, 54, 71), (76, 92, 71))
+            self, logo_y=0, logo_x=0, name_y=1, name_x=78, info_y=1, info_x=32, temp_y=2, temp_x=78, version_y=9,
+            version_x=32, copy_right_y=10, copy_right_x=32, link_y=11, link_x=32, idct_y=11, idct_x=78, dgts_y=14,
+            dgts_x=((0, 16, 33), (38, 54, 71), (76, 92, 71))
     ):
         super().__init__()
         self.error_emoji = '¯\\_(`-`)_/¯'
@@ -30,6 +31,12 @@ class Base(Configuration):
         self.temp_y: int = temp_y
         self.temp_x: int = temp_x
 
+        self.version_y: int = version_y
+        self.version_x: int = version_x
+
+        self.copy_right_y: int = copy_right_y
+        self.copy_right_x: int = copy_right_x
+
         self.link_y: int = link_y
         self.link_x: int = link_x
 
@@ -38,10 +45,6 @@ class Base(Configuration):
 
         self.dgts_y: int = dgts_y
         self.dgts_x: tuple[tuple[int, int, int], tuple[int, int, int], tuple[int, int, int]] = dgts_x
-
-        self.colors_dict: dict[str, int] = {
-            'MAGENTA': 1, 'BLUE': 2, 'CYAN': 3, 'GREEN': 4, 'YELLOW': 5, 'RED': 6, 'WHITE': 7, 'BLACK': 8
-        }
 
     def renew(self):
         """
@@ -101,11 +104,15 @@ class Base(Configuration):
 
         :raises KeyError: Если указанный цвет не найден в словаре цветов.
         """
-        for i, color_name in enumerate(self.colors_dict.keys()):
+        colors_dict: dict[str, int] = {
+            'MAGENTA': 1, 'BLUE': 2, 'CYAN': 3, 'GREEN': 4,
+            'YELLOW': 5, 'RED': 6, 'WHITE': 7, 'BLACK': 8
+        }
+        for i, color_name in enumerate(colors_dict.keys()):
             init_pair(1 + i, self.verify_color(color_name), -1)
-        if color not in self.colors_dict:
-            raise KeyError(f'Цвет "{color}" не найден в доступных цветах!')
-        return color_pair(self.colors_dict[color])
+        if color not in colors_dict:
+            raise KeyError(f'Цвет "{color}" не найден в доступных цветах.')
+        return color_pair(colors_dict[color])
 
     def get_info_list(self, function) -> list[str]:
         """
@@ -135,15 +142,19 @@ class LogoModule(Base):
             except error:
                 pass
 
-    def get_name_and_link(self, stdscr) -> None:
+    def display_info(self, stdscr) -> None:
         """
         Метод отображает название и ссылку на проект на экране.
         :param stdscr: Объект стандартного экрана для отображения названия и ссылки.
         """
         try:
             name = f'{self.get_date()} | ЭЛЕКТРОНИКА 54'
+            version = 'Clock (version 1.0.5)'
+            copy_right = 'MIT License, (c) 2025 JoerdonFryeman'
             link = 'https://github.com/JoerdonFryeman/Clock'
             stdscr.addstr(self.name_y, self.name_x, name, self.paint(self.digits_color))
+            stdscr.addstr(self.version_y, self.version_x, version, self.paint(self.info_color))
+            stdscr.addstr(self.copy_right_y, self.copy_right_x, copy_right, self.paint(self.info_color))
             stdscr.addstr(self.link_y, self.link_x, link, self.paint(self.info_color))
         except error:
             pass
@@ -203,8 +214,7 @@ class InfoModule(Base):
                 "─": "─" * (len(f'{self.verify_info(f"{login}")}@{self.verify_info(f"{node}")}') - 1),
                 "ОС: ": self.verify_info(self.info[2]),
                 "Версия ОС: ": self.verify_info(self.info[3]),
-                "Архитектура: ": self.verify_info(self.info[4]),
-                "Машина: ": self.verify_info(self.info[5]),
+                "Архитектура: ": f"{self.verify_info(self.info[4])}, {self.verify_info(self.info[5])}",
                 "Процессор: ": self.verify_info(self.info[6]),
                 "IP-адрес: ": f"{self.verify_info(self.info[7])}{' ' * 9}"
             },
@@ -213,8 +223,7 @@ class InfoModule(Base):
                 "─": "─" * (len(f'{self.verify_info(f"{login}")}@{self.verify_info(f"{node}")}') - 1),
                 "OS: ": self.verify_info(self.info[2]),
                 "OS Version: ": self.verify_info(self.info[3]),
-                "Architecture: ": self.verify_info(self.info[4]),
-                "Machine: ": self.verify_info(self.info[5]),
+                "Architecture: ": f"{self.verify_info(self.info[4])}, {self.verify_info(self.info[5])}",
                 "Processor: ": self.verify_info(self.info[6]),
                 "IP address: ": f"{self.verify_info(self.info[7])}{' ' * 9}"
             }
@@ -236,6 +245,7 @@ class TemperatureModule(Base):
     def __init__(self):
         super().__init__()
         self.temperature = self.get_temperature_info()
+        self.average_temperature = self.calculate_average_temperature()
 
     @staticmethod
     def verify_hardware(first: str, second: str) -> float | None:
@@ -287,7 +297,8 @@ class TemperatureModule(Base):
                 "Температура ГПУ: ": verify_temperature_info(self.temperature[1]),
                 "Температура ОЗУ: ": verify_temperature_info(self.temperature[2]),
                 "Тмп. накопителя: ": verify_temperature_info(self.temperature[3]),
-                "Тмп. мат. платы: ": verify_temperature_info(self.temperature[4])
+                "Тмп. мат. платы: ": verify_temperature_info(self.temperature[4]),
+                "Средняя тмп.   : ": verify_temperature_info(self.average_temperature)
             },
             "en": {
                 "─": "─" * 26,
@@ -295,7 +306,8 @@ class TemperatureModule(Base):
                 "GPU temperature: ": verify_temperature_info(self.temperature[1]),
                 "RAM temperature: ": verify_temperature_info(self.temperature[2]),
                 "Storage t.     : ": verify_temperature_info(self.temperature[3]),
-                "Motherboard t. : ": verify_temperature_info(self.temperature[4])
+                "Motherboard t. : ": verify_temperature_info(self.temperature[4]),
+                "Average tmp.   : ": verify_temperature_info(self.average_temperature)
             }
         }
         return info[self.verify_language(language)]
@@ -338,11 +350,10 @@ class TemperatureModule(Base):
         Проверяет среднюю температуру и отображает соответствующий индикатор.
         :param stdscr: Объект стандартного экрана для отображения индикатора температуры.
         """
-        average_temperature = self.calculate_average_temperature()
         thresholds = ((0, 40, 1), (40, 45, 2), (45, 50, 3), (50, 55, 4), (55, 60, 5), (60, 100, 6))
         try:
             for lower, upper, indicator in thresholds:
-                if lower <= average_temperature < upper:
+                if lower <= self.average_temperature < upper:
                     self.visualize_temperature_indicator(stdscr, indicator)
                     return
             self.visualize_temperature_indicator(stdscr, 0)
