@@ -2,7 +2,7 @@
 
 A simple console retro clock with system and temperature information.
 
-![Clock.png](../../../../%D0%98%D0%B7%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F/Clock.png)
+![Clock](https://github.com/user-attachments/assets/e7880e84-05c3-488f-bb46-a7f1453947e5)
 
 ## Project structure
 
