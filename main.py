@@ -1,10 +1,13 @@
-from clock import LogoModule, InfoModule, TemperatureModule, ClockModule
 from time import sleep, time
-from configuration import curs_set, use_default_colors, wrapper
 from threading import Thread
 
+from configuration import curs_set, wrapper
+from clock import ClockModule
+from info import InfoModule
+from temperature import TemperatureModule
 
-class RunProgram(ClockModule, TemperatureModule, InfoModule, LogoModule):
+
+class RunProgram(TemperatureModule, InfoModule, ClockModule):
     """Класс запуска всех компонентов программы."""
 
     @staticmethod
@@ -16,16 +19,14 @@ class RunProgram(ClockModule, TemperatureModule, InfoModule, LogoModule):
         :param function: Функция, которую необходимо выполнить в каждом цикле.
         """
         while True:
-            start_time = time()
-            curs_set(False), use_default_colors()
-            function(stdscr)
-            stdscr.refresh()
-            elapsed_time = time() - start_time
-            time_to_sleep = 0.25 - elapsed_time
+            start_time: float = time()
+            curs_set(False), function(stdscr), stdscr.refresh()
+            elapsed_time: float = time() - start_time
+            time_to_sleep: float = 0.25 - elapsed_time
             if time_to_sleep > 0:
                 sleep(time_to_sleep)
 
-    def get_info_modules(self, stdscr):
+    def get_info_modules(self, stdscr) -> None:
         """
         Обновляет и отображает информацию о системе, температуре и логотипе.
         :param stdscr: Объект стандартного экрана для отображения информации.

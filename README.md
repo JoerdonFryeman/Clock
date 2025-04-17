@@ -7,7 +7,10 @@ A simple console retro clock with system and temperature information.
 ## Project structure
 
 - `main.py`: The main module to run the program.
-- `clock.py`: Clock symbols and system info generation and animation module.
+- `clock.py`: Clock symbols generation and animation module.
+- `info`: System info generation and animation module.
+- `temperature`: Temperature info generation and animation module.
+- `base`: Base module for all modules.
 - `configuration.py`: Module for loading program configuration data.
 - `clock_config.json`: Program settings and configuration file.
 - `digits.json`: A set of images of digits.
@@ -15,7 +18,7 @@ A simple console retro clock with system and temperature information.
 
 ## Requirements
 
-- Python 3
+- Python 3.13
 - psutil 7.0.0
 - windows-curses 2.4.1a1 (for Windows)
 - The application was developed for Arch Linux with the KDE Plasma desktop environment, but should work in other distributions as well as with limitations in Windows.
