@@ -32,8 +32,8 @@ class RunProgram(TemperatureModule, InfoModule, ClockModule):
         :param stdscr: Объект стандартного экрана для отображения информации.
         """
         self.renew()
-        self.get_logo(stdscr), self.display_info(stdscr), self.visualize_system_info(stdscr)
-        self.visualize_temperature_info(stdscr), self.verify_temperature_indicator(stdscr)
+        self.display_logo(stdscr), self.display_info(stdscr), self.display_system_info(stdscr)
+        self.display_temperature_info(stdscr), self.verify_temperature_indicator(stdscr)
 
     def get_wrapped_threads(self) -> None:
         """
@@ -44,9 +44,9 @@ class RunProgram(TemperatureModule, InfoModule, ClockModule):
         """
         if self.system_info:
             Thread(target=wrapper, args=(self.run_all_modules, self.get_info_modules)).start()
-            Thread(target=wrapper, args=(self.run_all_modules, self.visualize_digits)).start()
+            Thread(target=wrapper, args=(self.run_all_modules, self.display_digits)).start()
         else:
-            wrapper(self.run_all_modules, self.visualize_digits)
+            wrapper(self.run_all_modules, self.display_digits)
 
 
 run = RunProgram()

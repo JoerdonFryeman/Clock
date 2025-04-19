@@ -2,8 +2,8 @@ import platform
 from datetime import datetime
 
 from configuration import (
-    Configuration, os, error, init_pair, use_default_colors, color_pair,
-    A_BOLD, COLOR_BLACK, COLOR_BLUE, COLOR_CYAN, COLOR_GREEN, COLOR_MAGENTA, COLOR_RED, COLOR_WHITE, COLOR_YELLOW
+    Configuration, os, error, init_pair, use_default_colors, color_pair, A_BOLD, COLOR_BLACK,
+    COLOR_BLUE, COLOR_CYAN, COLOR_GREEN, COLOR_MAGENTA, COLOR_RED, COLOR_WHITE, COLOR_YELLOW
 )
 
 
@@ -50,13 +50,6 @@ class Base(Configuration):
         self.dgts_y: int = dgts_y
         self.dgts_x: tuple[tuple[int, int, int], tuple[int, int, int], tuple[int, int, int]] = dgts_x
 
-    def renew(self):
-        """
-        Метод обновляет параметры класса.
-        :return: Вызывает инициализацию заново.
-        """
-        return self.__init__()
-
     @staticmethod
     def get_date() -> str:
         """
@@ -82,7 +75,9 @@ class Base(Configuration):
         return language
 
     @staticmethod
-    def visualize_symbols(stdscr, height: int, y: int, x: int, symbol: list, color: object) -> None:
+    def display_symbols(
+            stdscr, height: int, y: int, x: int, symbol: str | bool | list[str] | dict[str, str | bool], color: object
+    ) -> None:
         """
         Метод отображает символы на экране.
 
@@ -100,18 +95,25 @@ class Base(Configuration):
                 pass
 
     @staticmethod
-    def verify_color(color):
+    def verify_color(color) -> object | int:
         """
         Метод проверяет настройку цвета из конфигурации.
         :return: COLOR_*: Цветовая константа, соответствующая цветовой конфигурации.
         """
-        color_map: dict[str, object] = {
+        color_map: dict[str, int] = {
             'BLACK': COLOR_BLACK, 'BLUE': COLOR_BLUE, 'CYAN': COLOR_CYAN, 'GREEN': COLOR_GREEN,
             'MAGENTA': COLOR_MAGENTA, 'RED': COLOR_RED, 'WHITE': COLOR_WHITE, 'YELLOW': COLOR_YELLOW,
         }
         return color_map.get(color, COLOR_WHITE)
 
-    def paint(self, color: str, a_bold: bool) -> object:
+    def renew(self):
+        """
+        Метод обновляет параметры класса.
+        :return: Вызывает инициализацию заново.
+        """
+        return self.__init__()
+
+    def paint(self, color: str, a_bold: bool) -> int:
         """
         Метод раскрашивает текст или текстовое изображение.
 
@@ -134,7 +136,7 @@ class Base(Configuration):
             return color_pair(colors_dict[color]) | A_BOLD
         return color_pair(colors_dict[color])
 
-    def get_info_list(self, function) -> list:
+    def get_info_list(self, function) -> list[str]:
         """
         Метод получает список строковой информации на основе переданной функции.
 

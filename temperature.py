@@ -30,7 +30,7 @@ class TemperatureModule(Base):
                 return temperature.get(second, [])[0].current
             return temperature.get('acpitz', [])[0].current
         except (IndexError, TypeError):
-            pass
+            return None
 
     def get_temperature_info(self) -> tuple[float, float, float, float, float] | tuple[None, None, None, None, None]:
         """
@@ -77,15 +77,15 @@ class TemperatureModule(Base):
         }
         return info[self.verify_language(language)]
 
-    def visualize_temperature_info(self, stdscr) -> None:
+    def display_temperature_info(self, stdscr) -> None:
         """
         Метод отображает информацию о температуре на экране.
         :param stdscr: Объект стандартного экрана для отображения информации.
         """
-        data: list = self.get_info_list(self.create_temperature_info)
-        self.visualize_symbols(stdscr, len(data), self.temp_y, self.temp_x, data, self.paint(self.info_color, False))
+        data: list[str] = self.get_info_list(self.create_temperature_info)
+        self.display_symbols(stdscr, len(data), self.temp_y, self.temp_x, data, self.paint(self.info_color, False))
 
-    def visualize_temperature_indicator(self, stdscr, indicators_value: int) -> None:
+    def display_temperature_indicator(self, stdscr, indicators_value: int) -> None:
         """
         Метод отображает индикатор температуры на экране.
 
@@ -99,7 +99,7 @@ class TemperatureModule(Base):
             except error:
                 pass
 
-    def calculate_average_temperature(self) -> int | float | None:
+    def calculate_average_temperature(self) -> float | None:
         """
         Метод вычисляет среднюю температуру.
         :return: Средняя температура. Если допустимых значений нет, возвращает 0.
@@ -119,8 +119,10 @@ class TemperatureModule(Base):
         try:
             for lower, upper, indicator in thresholds:
                 if lower <= self.average_temperature < upper:
-                    self.visualize_temperature_indicator(stdscr, indicator)
-                    return
-            self.visualize_temperature_indicator(stdscr, 0)
+                    self.display_temperature_indicator(stdscr, indicator)
+                    return None
+            self.display_temperature_indicator(stdscr, 0)
+            return None
         except TypeError:
-            self.visualize_temperature_indicator(stdscr, 0)
+            self.display_temperature_indicator(stdscr, 0)
+            return None

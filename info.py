@@ -12,7 +12,7 @@ class InfoModule(Base):
         self.info: tuple = self.get_system_info()
 
     @staticmethod
-    def get_system_info() -> tuple:
+    def get_system_info() -> tuple[str, str, str, str, str, str, str, str]:
         """
         Метод получает информацию о системе.
         :return: Кортеж с информацией о пользователе, узле, системе, версии ОС, архитектуре, машине, процессоре и IP.
@@ -27,21 +27,21 @@ class InfoModule(Base):
         host_by_name: str = socket.gethostbyname(platform.node())
         return login, node, system, release, architecture, machine, processor, host_by_name
 
-    def get_logo(self, stdscr) -> None:
+    def display_logo(self, stdscr) -> None:
         """
         Метод получает и отображает логотип на экране.
         :param stdscr: Объект стандартного экрана для отображения логотипа.
         """
-        logos: dict[str, list[str]] = self.get_json_data('logos')
+        logos: dict[str, str | bool] = self.get_json_data('logos')
         try:
-            data: list = logos[self.verify_os()]
-            self.visualize_symbols(
+            data: str | bool = logos[self.verify_os()]
+            self.display_symbols(
                 stdscr, len(data), self.logo_y, self.logo_x, data, self.paint(self.logo_color, False)
             )
         except KeyError:
             try:
                 stdscr.addstr(
-                    self.logo_y + 5, self.logo_x + 5, self.error_emoji, self.paint(self.logo_color, False)
+                    self.logo_y + 6, self.logo_x + 11, self.error_emoji, self.paint(self.logo_color, False)
                 )
             except error:
                 pass
@@ -111,10 +111,10 @@ class InfoModule(Base):
         }
         return info[self.verify_language(language)]
 
-    def visualize_system_info(self, stdscr) -> None:
+    def display_system_info(self, stdscr) -> None:
         """
         Метод отображает информацию о системе на экране.
         :param stdscr: Объект стандартного экрана для отображения информации.
         """
-        data: list = self.get_info_list(self.create_system_info)
-        self.visualize_symbols(stdscr, len(data), self.info_y, self.info_x, data, self.paint(self.info_color, False))
+        data: list[str] = self.get_info_list(self.create_system_info)
+        self.display_symbols(stdscr, len(data), self.info_y, self.info_x, data, self.paint(self.info_color, False))
