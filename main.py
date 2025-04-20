@@ -44,9 +44,15 @@ class RunProgram(TemperatureModule, InfoModule, ClockModule):
         """
         if self.system_info:
             Thread(target=wrapper, args=(self.run_all_modules, self.get_info_modules)).start()
-            Thread(target=wrapper, args=(self.run_all_modules, self.display_digits)).start()
-        else:
+        if self.clock:
             wrapper(self.run_all_modules, self.display_digits)
+        else:
+            message: dict[str, str] = {
+                "ru": "\nМодули часов и информации деактивированы, что ещё ты хочешь здесь увидеть?\n",
+                "en": "\nClock and info modules are disabled, what else do you want to see here?\n"
+            }
+            language = lambda: self.language if self.language == "ru" or self.language == "en" else "ru"
+            print(message[self.verify_language(language())])
 
 
 run = RunProgram()

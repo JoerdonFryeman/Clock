@@ -10,7 +10,7 @@ class ClockModule(Base):
         :param stdscr: Объект стандартного экрана для отображения цифр.
         """
         color: int = self.paint(self.digits_color, False)
-        digits_height = lambda: self.dgts_y if self.system_info else self.dgts_y - 6
+        digits_height = lambda: self.dgts_y if self.system_info else self.dgts_y - 12
         y: int = digits_height()
         x: tuple[tuple[int, int, int], tuple[int, int, int], tuple[int, int, int]] = self.dgts_x
 

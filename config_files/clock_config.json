@@ -2,6 +2,7 @@
     "digits_color": "MAGENTA",
     "system_info_color": "GREEN",
     "logo_color": "BLUE",
+    "clock": true,
     "system_info": true,
     "language": "ru",
     "logo_name": ""

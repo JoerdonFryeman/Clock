@@ -25,6 +25,7 @@ class Configuration:
         "digits_color": "MAGENTA",
         "system_info_color": "GREEN",
         "logo_color": "BLUE",
+        "clock": True,
         "system_info": True,
         "language": "ru",
         "logo_name": ""
@@ -77,7 +78,7 @@ class Configuration:
             return None
 
     __slots__ = (
-        'variables', 'digits_color', 'info_color', 'logo_color', 'system_info', 'language', 'logo_name'
+        'variables', 'digits_color', 'info_color', 'logo_color', 'clock', 'system_info', 'language', 'logo_name'
     )
 
     def __init__(self):
@@ -86,6 +87,7 @@ class Configuration:
             self.digits_color: str = self.variables['digits_color']
             self.info_color: str = self.variables['system_info_color']
             self.logo_color: str = self.variables['logo_color']
+            self.clock: bool = self.variables['clock']
             self.system_info: bool = self.variables['system_info']
             self.language: str = self.variables['language']
             self.logo_name: str = self.variables['logo_name']
