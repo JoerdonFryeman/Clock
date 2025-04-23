@@ -2,7 +2,7 @@
 
 A simple console retro clock with system and temperature information.
 
-![Clock](https://github.com/user-attachments/assets/e7880e84-05c3-488f-bb46-a7f1453947e5)
+![Clock](https://github.com/user-attachments/assets/3dd15196-6276-46f2-82f5-7b5a6a9c6652)
 
 ## Project structure
 
@@ -61,7 +61,7 @@ python main.py
 Some program settings can be specified in the clock_config.json file.
 
 - You can change the color of the clock, logo, or system info: BLACK, BLUE, CYAN, GREEN, MAGENTA, RED, WHITE, YELLOW.
-- With true or false enable or disable system and temperature info (temperature info is only available on Linux).
+- With true or false enable or disable clock or system and temperature info (temperature info is only available on Linux).
 - Change the system info language to Russian “ru” or English “en”.
 - Create your own logo (13x31), add it to the logos.json file and enter its name in the clock_config.json file in the "logo_name" key.
 
