@@ -6,11 +6,11 @@ A simple console retro clock with system and temperature information.
 
 ## Startup
 - Download [latest release](https://github.com/JoerdonFryeman/Clock/releases/tag/Clock_v1.0.6).
-- In Linux, run Clock_v1.0.6.app in the terminal or with the command:
+- In Linux, run ```Clock_v1.0.6.app``` in the terminal or with the command:
 ```console
 cd /home/your_directories.../Clock_v1.0.6/Linux/ && ./Clock_v1.0.6.app
 ```
-- In Windows, run Clock_v1.0.6.exe
+- In Windows, run ```Clock_v1.0.6.exe```
 
 ## Project structure
 
