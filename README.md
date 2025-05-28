@@ -75,10 +75,10 @@ Some program settings can be specified in the clock_config.json file.
 
 The default settings can be restored by deleting the clock_config.json file and restarting the program.
 
-### License
+## License
 
 This project is being developed under the MIT license.
 
-### Support with Bitcoin
+## Support with Bitcoin
 
 bc1qewfgtrrg2gqgtvzl5d2pr9pte685pp5n3g6scy
