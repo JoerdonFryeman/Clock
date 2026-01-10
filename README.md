@@ -41,29 +41,39 @@ git clone https://github.com/JoerdonFryeman/Clock
 cd Clock
 ```
 
-Create a virtual environment and install the requirements
-
 ### For Linux
+
+Create and activate a virtual environment:
 
 ``` console
 python -m venv venv && source venv/bin/activate
+```
+
+Install the requirements and run the script in your console:
+
+``` console
 pip install --upgrade pip && pip install -r requirements_for_linux.txt
+python core/main.py
 ```
 
 ### For Windows
 
+Create and activate a virtual environment:
+
 ``` console
 python -m venv venv && venv\Scripts\activate
-python.exe -m pip install --upgrade pip && pip install -r requirements_for_windows.txt
 ```
 
-## Startup
-
-You can start the project in your console
+Install the requirements and run the script in your console:
 
 ``` console
-python main.py
+python.exe -m pip install --upgrade pip && pip install -r requirements_for_windows.txt
+python core\main.py
 ```
+
+## Stop
+
+Just press Enter or try any other key.
 
 ## Settings
 
