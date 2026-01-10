@@ -53,8 +53,8 @@ class InfoModule(Base):
         """
         try:
             name: str = f'{self.get_date()} | ЭЛЕКТРОНИКА 54'
-            version: str = 'Clock (version 1.0.6)'
-            copy_right: str = 'MIT License, (c) 2025 JoerdonFryeman'
+            version: str = 'Clock (version 1.0.7)'
+            copy_right: str = 'MIT License, (c) 2026 JoerdonFryeman'
             link: str = 'https://github.com/JoerdonFryeman/Clock'
             stdscr.addstr(self.name_y, self.name_x, name, self.paint(self.digits_color, False))
             stdscr.addstr(self.version_y, self.version_x, version, self.paint(self.info_color, False))

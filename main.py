@@ -1,7 +1,7 @@
 from time import sleep, time
 from threading import Thread
 
-from configuration import curs_set, wrapper
+from configuration import curs_set, wrapper, error
 from clock import ClockModule
 from info import InfoModule
 from temperature import TemperatureModule
@@ -10,17 +10,40 @@ from temperature import TemperatureModule
 class RunProgram(TemperatureModule, InfoModule, ClockModule):
     """Класс запуска всех компонентов программы."""
 
+    running: bool = True
+
     @staticmethod
-    def run_all_modules(stdscr, function) -> None:
+    def safe_wrapper(function, func_arg, arg: bool) -> None:
+        """Запускает метод в обёртке и игнорирует ошибки curses."""
+        try:
+            if arg:
+                wrapper(function, func_arg)
+            else:
+                wrapper(function)
+        except error:
+            pass
+
+    @classmethod
+    def wait_for_enter(cls, stdscr) -> None:
+        """Ожидает нажатия клавиши."""
+        stdscr.nodelay(False)
+        stdscr.getch()
+        cls.running: bool = False
+        stdscr.clear()
+
+    @classmethod
+    def run_all_modules(cls, stdscr, function) -> None:
         """
         Запускает все модули программы в цикле.
 
         :param stdscr: Объект стандартного экрана для отображения информации.
         :param function: Функция, которую необходимо выполнить в каждом цикле.
         """
-        while True:
+        while cls.running:
             start_time: float = time()
-            curs_set(False), function(stdscr), stdscr.refresh()
+            curs_set(False)
+            function(stdscr)
+            stdscr.refresh()
             elapsed_time: float = time() - start_time
             time_to_sleep: float = 0.25 - elapsed_time
             if time_to_sleep > 0:
@@ -31,21 +54,21 @@ class RunProgram(TemperatureModule, InfoModule, ClockModule):
         Обновляет и отображает информацию о системе, температуре и логотипе.
         :param stdscr: Объект стандартного экрана для отображения информации.
         """
-        self.renew()
         self.display_logo(stdscr), self.display_info(stdscr), self.display_system_info(stdscr)
-        self.display_temperature_info(stdscr), self.verify_temperature_indicator(stdscr)
+        self.display_temperature_info(stdscr), self.verify_temperature_indicator(stdscr), self.renew()
 
-    def get_wrapped_threads(self) -> None:
+    def get_wrapped_threads(self, stdscr) -> None:
         """
         Запускает потоки для выполнения модулей в зависимости от наличия системной информации.
 
         Если системная информация доступна, запускает потоки для обновления информации и визуализации цифр.
         В противном случае выполняет визуализацию цифр в основном потоке.
         """
+        Thread(target=self.safe_wrapper, args=(self.wait_for_enter, None, False)).start()
         if self.system_info:
-            Thread(target=wrapper, args=(self.run_all_modules, self.get_info_modules)).start()
+            Thread(target=self.safe_wrapper, args=(self.run_all_modules, self.get_info_modules, True)).start()
         if self.clock:
-            wrapper(self.run_all_modules, self.display_digits)
+            self.run_all_modules(stdscr, self.display_digits)
         else:
             message: dict[str, str] = {
                 "ru": "\nМодули часов и информации деактивированы, что ещё ты хочешь здесь увидеть?\n",
@@ -60,11 +83,10 @@ run = RunProgram()
 
 def main() -> None:
     """Запускающая все процессы главная функция."""
-
     try:
-        run.get_wrapped_threads()
-    except Exception as error:
-        print(f'Проверка выдала ошибку: {error}')
+        run.safe_wrapper(run.get_wrapped_threads, None, False)
+    except Exception as e:
+        print(f'Проверка выдала ошибку: {e}')
 
 
 if __name__ == '__main__':
