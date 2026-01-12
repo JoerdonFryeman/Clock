@@ -1,4 +1,6 @@
+import pwd
 import socket
+import getpass
 
 from configuration import os, error
 from base import Base, platform
@@ -17,14 +19,22 @@ class InfoModule(Base):
         Метод получает информацию о системе.
         :return: Кортеж с информацией о пользователе, узле, системе, версии ОС, архитектуре, машине, процессоре и IP.
         """
-        login: str = os.getlogin()
+        try:
+            login = getpass.getuser()
+        except Exception:
+            try:
+                login = pwd.getpwuid(os.geteuid()).pw_name
+            except Exception:
+                login = os.environ.get("USER")
+
         node: str = platform.node()
         system: str = platform.system()
         release: str = platform.release()
         architecture: str = platform.architecture()[0]
         machine: str = platform.machine()
         processor: str = platform.processor()
-        host_by_name: str = socket.gethostbyname(platform.node())
+        host_by_name = socket.gethostbyname(node)
+
         return login, node, system, release, architecture, machine, processor, host_by_name
 
     def display_logo(self, stdscr) -> None:
