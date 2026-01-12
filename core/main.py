@@ -11,6 +11,16 @@ class RunProgram(TemperatureModule, InfoModule, ClockModule):
     """Класс запуска всех компонентов программы."""
 
     running: bool = True
+    message: dict[str, str] = {
+        "ru": "\nМодули часов и информации деактивированы, что ещё ты хочешь здесь увидеть?\nНажми Enter для завершения.",
+        "en": "\nClock and info modules are disabled, what else do you want to see here?\nPress Enter to exit."
+    }
+
+    class NoThreadsError(Exception):
+        """Вложенный класс ошибки отсутствия потоков."""
+
+        def __init__(self, message: dict[str, str], key: str):
+            super().__init__(message[key])
 
     @staticmethod
     def safe_wrapper(function, func_arg, arg: bool) -> None:
@@ -69,13 +79,9 @@ class RunProgram(TemperatureModule, InfoModule, ClockModule):
             Thread(target=self.safe_wrapper, args=(self.run_all_modules, self.get_info_modules, True)).start()
         if self.clock:
             self.run_all_modules(stdscr, self.display_digits)
-        else:
-            message: dict[str, str] = {
-                "ru": "\nМодули часов и информации деактивированы, что ещё ты хочешь здесь увидеть?\n",
-                "en": "\nClock and info modules are disabled, what else do you want to see here?\n"
-            }
+        if not self.system_info and not self.clock:
             language = lambda: self.language if self.language == "ru" or self.language == "en" else "ru"
-            print(message[self.verify_language(language())])
+            raise self.NoThreadsError(self.message, self.verify_language(language()))
 
 
 run = RunProgram()
