@@ -12,8 +12,8 @@ class RunProgram(TemperatureModule, InfoModule, ClockModule):
 
     running: bool = True
     message: dict[str, str] = {
-        "ru": "\nМодули часов и информации деактивированы, что ещё ты хочешь здесь увидеть?\nНажми Enter для завершения.",
-        "en": "\nClock and info modules are disabled, what else do you want to see here?\nPress Enter to exit."
+        "ru": "\nМодули часов и информации деактивированы, что ещё ты хочешь здесь увидеть?",
+        "en": "\nClock and info modules are disabled, what else do you want to see here?"
     }
 
     class NoThreadsError(Exception):
@@ -32,6 +32,8 @@ class RunProgram(TemperatureModule, InfoModule, ClockModule):
                 wrapper(function)
         except error:
             pass
+        except Exception as e:
+            print(f'Проверка выдала ошибку: {e}\nНажми Enter для завершения.')
 
     @classmethod
     def wait_for_enter(cls, stdscr) -> None:
@@ -80,8 +82,7 @@ class RunProgram(TemperatureModule, InfoModule, ClockModule):
         if self.clock:
             self.run_all_modules(stdscr, self.display_digits)
         if not self.system_info and not self.clock:
-            language = lambda: self.language if self.language == "ru" or self.language == "en" else "ru"
-            raise self.NoThreadsError(self.message, self.verify_language(language()))
+            raise self.NoThreadsError(self.message, self.verify_language(self.language))
 
 
 run = RunProgram()
@@ -92,7 +93,7 @@ def main() -> None:
     try:
         run.safe_wrapper(run.get_wrapped_threads, None, False)
     except Exception as e:
-        print(f'Проверка выдала ошибку: {e}')
+        print(f'Проверка выдала ошибку: {e}\nНажми Enter для завершения.')
 
 
 if __name__ == '__main__':
