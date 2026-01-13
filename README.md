@@ -13,6 +13,22 @@ cd /home/your_directories.../Clock_v1.0.6/Linux/ && ./Clock_v1.0.6.app
 ```
 In Windows, run ```Clock_v1.0.6.exe```
 
+## Docker
+
+Image [latest release](https://hub.docker.com/r/joerdonfryeman/clock).
+
+Run the image attached to the standard input/output streams:
+
+```console
+docker run -it joerdonfryeman/clock:1.0.7
+```
+
+Alternative (clarifies intent; second command corrected):
+
+```console
+docker run --rm -it joerdonfryeman/clock:1.0.7
+```
+
 ## Project structure
 
 - `main.py`: The main module to run the program.
