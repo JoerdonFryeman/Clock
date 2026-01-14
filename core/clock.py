@@ -1,4 +1,4 @@
-from base import Base, datetime
+from .base import Base, datetime
 
 
 class ClockModule(Base):

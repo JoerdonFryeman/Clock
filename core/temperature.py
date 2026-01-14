@@ -1,7 +1,7 @@
 import psutil
 
-from configuration import error, color_pair
-from base import Base
+from .configuration import error, color_pair
+from .base import Base
 
 
 class TemperatureModule(Base):

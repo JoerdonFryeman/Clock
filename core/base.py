@@ -1,7 +1,7 @@
 import platform
 from datetime import datetime
 
-from configuration import (
+from .configuration import (
     Configuration, os, error, init_pair, use_default_colors, color_pair, A_BOLD, COLOR_BLACK,
     COLOR_BLUE, COLOR_CYAN, COLOR_GREEN, COLOR_MAGENTA, COLOR_RED, COLOR_WHITE, COLOR_YELLOW
 )

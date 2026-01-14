@@ -1,10 +1,10 @@
 from time import sleep, time
 from threading import Thread
 
-from configuration import curs_set, wrapper, error
-from clock import ClockModule
-from info import InfoModule
-from temperature import TemperatureModule
+from core.configuration import curs_set, wrapper, error
+from core.clock import ClockModule
+from core.info import InfoModule
+from core.temperature import TemperatureModule
 
 
 class RunProgram(TemperatureModule, InfoModule, ClockModule):

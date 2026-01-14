@@ -2,8 +2,8 @@ import pwd
 import socket
 import getpass
 
-from configuration import os, error
-from base import Base, platform
+from .configuration import os, error
+from .base import Base, platform
 
 
 class InfoModule(Base):
