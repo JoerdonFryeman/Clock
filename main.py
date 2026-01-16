@@ -76,7 +76,6 @@ class RunProgram(TemperatureModule, InfoModule, ClockModule):
         Если системная информация доступна, запускает потоки для обновления информации и визуализации цифр.
         В противном случае выполняет визуализацию цифр в основном потоке.
         """
-        Thread(target=self.safe_wrapper, args=(self.wait_for_enter, None, False)).start()
         if self.system_info:
             Thread(target=self.safe_wrapper, args=(self.run_all_modules, self.get_info_modules, True)).start()
         if self.clock:
@@ -91,6 +90,7 @@ run = RunProgram()
 def main() -> None:
     """Запускающая все процессы главная функция."""
     try:
+        Thread(target=run.safe_wrapper, args=(run.wait_for_enter, None, False)).start()
         run.safe_wrapper(run.get_wrapped_threads, None, False)
     except Exception as e:
         print(f'Проверка выдала ошибку: {e}\nНажми Enter для завершения.')
