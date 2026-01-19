@@ -38,10 +38,9 @@ class RunProgram(TemperatureModule, InfoModule, ClockModule):
     @classmethod
     def wait_for_enter(cls, stdscr) -> None:
         """Ожидает нажатия клавиши."""
-        stdscr.nodelay(False)
         stdscr.getch()
         cls.running: bool = False
-        stdscr.clear()
+        sleep(0.5)
 
     @classmethod
     def run_all_modules(cls, stdscr, function) -> None:

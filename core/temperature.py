@@ -1,6 +1,6 @@
 import psutil
 
-from .configuration import error, color_pair
+from .configuration import color_pair
 from .base import Base
 
 
@@ -93,11 +93,8 @@ class TemperatureModule(Base):
         :param indicators_value: Значение индикатора температуры.
         """
         for i in range(6):
-            try:
-                verify_item = lambda x: '█████' if i < indicators_value else '     '
-                stdscr.addstr(self.idct_y, self.idct_x + i * 5, verify_item(i), color_pair(1 + i))
-            except error:
-                pass
+            verify_item = lambda x: '█████' if i < indicators_value else '     '
+            stdscr.addstr(self.idct_y, self.idct_x + i * 5, verify_item(i), color_pair(1 + i))
 
     def calculate_average_temperature(self) -> float | None:
         """
