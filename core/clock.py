@@ -1,7 +1,9 @@
-from .base import Base, datetime
+from datetime import datetime
+
+from .visualisation import Visualisation
 
 
-class ClockModule(Base):
+class Clock(Visualisation):
     """Класс визуализации текстовых изображений цифр."""
 
     def display_digits(self, stdscr) -> None:
@@ -14,7 +16,7 @@ class ClockModule(Base):
         y: int = digits_height()
         x: tuple[tuple[int, int, int], tuple[int, int, int], tuple[int, int, int]] = self.dgts_x
 
-        data: dict[str, str | bool] = self.get_json_data('digits')
+        data: dict[str, str | bool] = self.get_json_data('config_files', 'digits')
         current_time: tuple = f'{datetime.now():%H}', f'{datetime.now():%M}', f'{datetime.now():%S}'
 
         for i in range(3):

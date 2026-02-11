@@ -1,16 +1,15 @@
 import psutil
 
-from .configuration import color_pair
-from .base import Base
+from .visualisation import color_pair, Visualisation
 
 
-class TemperatureModule(Base):
+class Temperature(Visualisation):
     """Класс получения и отображения информации о температуре."""
 
     def __init__(self):
         super().__init__()
-        self.temperature: tuple = self.get_temperature_info()
-        self.average_temperature: int | float | None = self.calculate_average_temperature()
+        self.temperature = self.get_temperature_info()
+        self.average_temperature = self.calculate_average_temperature()
 
     @staticmethod
     def verify_hardware(first: str, second: str) -> float | None:
