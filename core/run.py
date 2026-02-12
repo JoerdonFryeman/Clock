@@ -32,10 +32,7 @@ class Additionally(Clock, Info, Temperature):
         self.average_temperature = self.calculate_average_temperature()
 
     def get_info_modules(self, stdscr) -> None:
-        """
-        Обновляет и отображает информацию о системе, температуре и логотипе.
-        :param stdscr: Объект стандартного экрана для отображения информации.
-        """
+        """Обновляет и отображает информацию о системе, температуре и логотипе."""
         self.display_logo(stdscr), self.display_info(stdscr), self.display_system_info(stdscr)
         self.display_temperature_info(stdscr), self.verify_temperature_indicator(stdscr), self.renew()
 
@@ -64,27 +61,17 @@ class RunProgram(Additionally):
         self.running: bool = False
 
     def create_main_loop(self, stdscr, function) -> None:
-        """
-        Запускает все модули программы в цикле.
-
-        :param stdscr: Объект стандартного экрана для отображения информации.
-        :param function: Функция, которую необходимо выполнить в каждом цикле.
-        """
+        """Запускает все модули программы в цикле."""
         while self.running:
             self.build_app(stdscr, function)
 
-    def create_wrapped_threads(self, stdscr) -> None:
-        """
-        Запускает потоки для выполнения модулей в зависимости от наличия системной информации.
-
-        Если системная информация доступна, запускает потоки для обновления информации и визуализации цифр.
-        В противном случае выполняет визуализацию цифр в основном потоке.
-        """
+    def create_wrapped_threads(self) -> None:
+        """Запускает потоки для выполнения модулей в зависимости от наличия системной информации."""
         self.safe_wrapper(self.init_curses, None)
         Thread(target=self.safe_wrapper, args=(self.wait_for_enter, None)).start()
         if self.system_info:
             Thread(target=self.safe_wrapper, args=(self.create_main_loop, self.get_info_modules)).start()
         if self.clock:
-            self.create_main_loop(stdscr, self.display_digits)
+            self.safe_wrapper(self.create_main_loop, self.display_digits)
         if not self.system_info and not self.clock:
             raise self.NoThreadsError(self.message, self.verify_language(self.language))

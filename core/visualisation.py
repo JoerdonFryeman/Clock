@@ -54,10 +54,7 @@ class Visualisation(Base):
 
     @staticmethod
     def format_date() -> str:
-        """
-        Метод получает текущую дату в формате 'DD.MM.YYYY'.
-        :return: Текущая дата в строковом формате.
-        """
+        """Метод получает текущую дату в формате 'DD.MM.YYYY'."""
         now = datetime.now()
         day, month, year = now.day, now.month, now.year
         day_and_month = lambda x: x if x > 9 else f'0{x}'
@@ -68,16 +65,7 @@ class Visualisation(Base):
     def display_symbols(
             stdscr, height: int, y: int, x: int, symbol: str | bool | list[str] | dict[str, str | bool], color: object
     ) -> None:
-        """
-        Метод отображает символы на экране.
-
-        :param stdscr: Объект стандартного экрана для отображения символов.
-        :param height: Высота символа.
-        :param y: Координаты расположения по вертикали.
-        :param x: Координаты расположения по горизонтали.
-        :param symbol: Текстовое изображение.
-        :param color: Цвет изображения.
-        """
+        """Метод отображает символы на экране."""
         for i in range(height):
             try:
                 stdscr.addstr(i + y, x, symbol[i], color)
@@ -86,23 +74,16 @@ class Visualisation(Base):
 
     @staticmethod
     def verify_color(color) -> object | int:
-        """
-        Метод проверяет настройку цвета из конфигурации.
-        :return: COLOR_*: Цветовая константа, соответствующая цветовой конфигурации.
-        """
+        """Метод проверяет настройку цвета из конфигурации."""
         color_map: dict[str, int] = {
             'BLACK': COLOR_BLACK, 'BLUE': COLOR_BLUE, 'CYAN': COLOR_CYAN, 'GREEN': COLOR_GREEN,
             'MAGENTA': COLOR_MAGENTA, 'RED': COLOR_RED, 'WHITE': COLOR_WHITE, 'YELLOW': COLOR_YELLOW,
         }
         return color_map.get(color, COLOR_WHITE)
 
-    def init_curses(self, stdscr) -> None:
+    @staticmethod
+    def init_curses(stdscr) -> None:
         """Инициализирует экран curses"""
-        self.logger.info(
-            '| ЭЛЕКТРОНИКА 54 | Clock (version 1.0.7) | '
-            'https://github.com/JoerdonFryeman/Clock | '
-            'MIT License, (c) 2026 Joerdon Fryeman |'
-        )
         stdscr.clear()
         stdscr.refresh()
         curs_set(False)
@@ -111,15 +92,7 @@ class Visualisation(Base):
             start_color()
 
     def paint(self, color: str, a_bold: bool) -> int:
-        """
-        Метод раскрашивает текст или текстовое изображение.
-
-        :param color: Цвет изображения.
-        :param a_bold: A bold symbol true or false
-
-        :return: Объект color_pair.
-        :raises KeyError: Если указанный цвет не найден в словаре цветов.
-        """
+        """Метод раскрашивает текст или текстовое изображение."""
         colors_dict: dict[str, int] = {
             'MAGENTA': 1, 'BLUE': 2, 'CYAN': 3, 'GREEN': 4,
             'YELLOW': 5, 'RED': 6, 'WHITE': 7, 'BLACK': 8
@@ -136,10 +109,5 @@ class Visualisation(Base):
         return color_pair(colors_dict[color])
 
     def get_info_list(self, function) -> list[str]:
-        """
-        Метод получает список строковой информации на основе переданной функции.
-
-        :param function: Функция, которая возвращает словарь с информацией для отображения.
-        :return: Список строк, каждая из которых содержит ключ и значение из словаря.
-        """
+        """Метод получает список строковой информации на основе переданной функции."""
         return [f"{key}{value}" for key, value in function(self.language).items()]

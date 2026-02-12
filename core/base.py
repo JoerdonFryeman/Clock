@@ -45,12 +45,7 @@ class Base:
 
     @staticmethod
     def verify_language(language: str) -> str:
-        """
-        Метод проверяет язык и возвращает 'ru', если язык не поддерживается.
-
-        :param language: Язык для проверки.
-        :return: Поддерживаемый язык ('ru' или 'en').
-        """
+        """Метод проверяет язык и возвращает 'ru', если язык не поддерживается."""
         if language not in ['ru', 'en']:
             language: str = 'ru'
         return language
@@ -115,3 +110,12 @@ class Base:
     def get_logging_data(self) -> None:
         """Загружает и применяет конфигурацию логирования из JSON-файла."""
         config.dictConfig(self.get_json_data('config_files/logs', 'logging'))
+
+    def log_app_release(self, name: str, version: str, year: int) -> None:
+        """Логирует заголовок приложения в один info-вызов."""
+        self.logger.info(
+            '| ЭЛЕКТРОНИКА 54 | %s (version %s) | '
+            'https://github.com/JoerdonFryeman/AudioVisualizer | '
+            'MIT License, (c) %d Joerdon Fryeman |',
+            name, version, year
+        )

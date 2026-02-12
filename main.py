@@ -8,7 +8,8 @@ def main() -> None:
     try:
         run.create_directories()
         run.get_logging_data()
-        run.safe_wrapper(run.create_wrapped_threads, None)
+        run.log_app_release('Clock', '1.0.7', 2026)
+        run.create_wrapped_threads()
     except Exception as e:
         run.logger.error(f'Проверка выдала ошибку: {e}\nНажми Enter для завершения.')
 

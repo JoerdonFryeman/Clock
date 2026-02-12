@@ -1,5 +1,4 @@
 import os
-import pwd
 import socket
 import getpass
 import platform
@@ -13,19 +12,19 @@ class Info(Visualisation):
         super().__init__()
         self.info = self.get_system_info()
 
-    @staticmethod
-    def get_system_info() -> tuple[str, str, str, str, str, str, str, str, str]:
-        """
-        Метод получает информацию о системе.
-        :return: Кортеж с информацией о пользователе, узле, системе, версии ОС, архитектуре, машине, процессоре и IP.
-        """
+    def get_system_info(self) -> tuple[str, str, str, str, str, str, str, str, str]:
+        """Метод получает информацию о системе."""
         try:
             login = getpass.getuser()
         except Exception:
             try:
-                login = pwd.getpwuid(os.geteuid()).pw_name
+                if self.verify_os() != 'Windows':
+                    import pwd
+                    login = pwd.getpwuid(os.geteuid()).pw_name
+                else:
+                    login = os.getlogin()
             except Exception:
-                login = os.environ.get("USER")
+                login = 'user'
 
         node: str = platform.node()
         system: str = platform.system()
@@ -39,10 +38,7 @@ class Info(Visualisation):
         return login, node, system, release, architecture, machine, version_python, processor, host_by_name
 
     def display_logo(self, stdscr) -> None:
-        """
-        Метод получает и отображает логотип на экране.
-        :param stdscr: Объект стандартного экрана для отображения логотипа.
-        """
+        """Метод получает и отображает логотип на экране."""
         logos: dict[str, str | bool] = self.get_json_data('config_files', 'logos')
         try:
             data: str | bool = logos[self.logo_name if self.logo_name != '' else self.verify_os()]
@@ -58,10 +54,7 @@ class Info(Visualisation):
                 pass
 
     def display_info(self, stdscr) -> None:
-        """
-        Метод отображает название проекта на экране.
-        :param stdscr: Объект стандартного экрана для отображения названия и ссылки.
-        """
+        """Метод отображает название проекта на экране."""
         try:
             name: str = f'{self.format_date()} | ЭЛЕКТРОНИКА 54'
             version: str = 'Clock (version 1.0.7)'
@@ -73,14 +66,7 @@ class Info(Visualisation):
             pass
 
     def verify_info(self, info: str, max_length: int = 16) -> str:
-        """
-        Метод проверяет и обрезает информацию до заданной длины.
-
-        :param info: Информация для проверки.
-        :param max_length: Максимальная длина строки.
-
-        :return: Проверенная и обрезанная информация или символ ошибки.
-        """
+        """Метод проверяет и обрезает информацию до заданной длины."""
         if info:
             if isinstance(info, str):
                 if len(info) <= max_length:
@@ -90,12 +76,7 @@ class Info(Visualisation):
         return self.error_emoji
 
     def create_system_info(self, language: str = 'ru') -> dict:
-        """
-        Метод создает словарь с информацией о системе на заданном языке.
-
-        :param language: Язык для отображения информации ('ru' или 'en').
-        :return: Словарь с информацией о системе на выбранном языке.
-        """
+        """Метод создает словарь с информацией о системе на заданном языке."""
         login: str = self.verify_info(self.info[0])
         node: str = self.verify_info(self.info[1])
         info: dict = {
@@ -123,9 +104,6 @@ class Info(Visualisation):
         return info[self.verify_language(language)]
 
     def display_system_info(self, stdscr) -> None:
-        """
-        Метод отображает информацию о системе на экране.
-        :param stdscr: Объект стандартного экрана для отображения информации.
-        """
+        """Метод отображает информацию о системе на экране."""
         data: list[str] = self.get_info_list(self.create_system_info)
         self.display_symbols(stdscr, len(data), self.info_y, self.info_x, data, self.paint(self.info_color, False))
