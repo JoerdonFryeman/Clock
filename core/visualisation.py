@@ -54,12 +54,9 @@ class Visualisation(Base):
 
     @staticmethod
     def format_date() -> str:
-        """Метод получает текущую дату в формате 'DD.MM.YYYY'."""
+        """Возвращает текущую дату в формате 'DD.MM.YYYY'."""
         now = datetime.now()
-        day, month, year = now.day, now.month, now.year
-        day_and_month = lambda x: x if x > 9 else f'0{x}'
-        date: str = f'{day_and_month(day)}.{day_and_month(month)}.{year}'
-        return date
+        return now.strftime("%d.%m.%Y")
 
     @staticmethod
     def display_symbols(
