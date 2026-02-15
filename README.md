@@ -7,7 +7,7 @@ A simple console retro clock with system and temperature information.
 ## Startup
 Download [latest release](https://github.com/JoerdonFryeman/Clock/releases/tag/Clock_v1.0.6).
 
-In Linux, run ```Clock_v1.0.6.app``` in the terminal or with the command:
+In Linux, run ```Clock_v1.0.6.app``` in the terminal with the command:
 ```console
 cd /home/your_directories.../Clock_v1.0.6/Linux/ && ./Clock_v1.0.6.app
 ```
@@ -29,23 +29,11 @@ Same with automatic container removal after exit:
 docker run --rm -it joerdonfryeman/clock:1.0.7
 ```
 
-## Project structure
-
-- `main.py`: The main module to run the program.
-- `clock.py`: Clock symbols generation and animation module.
-- `info`: System info generation and animation module.
-- `temperature`: Temperature info generation and animation module.
-- `base`: Base module for all modules.
-- `configuration.py`: Module for loading program configuration data.
-- `clock_config.json`: Program settings and configuration file.
-- `digits.json`: A set of images of digits.
-- `logos.json`: A set of images of logos.
-
 ## Requirements
 
-- Python 3.13
-- psutil 7.0.0
-- windows-curses 2.4.1a1 (for Windows)
+- Python: >= 3.14
+- psutil: >= 7.2.2
+- windows-curses: >= 2.4.1a1 (for Windows)
 - The application was developed for Arch Linux with the KDE Plasma desktop environment, but should work in other distributions as well as with limitations in Windows.
 
 ## Installation
@@ -68,7 +56,7 @@ python -m venv venv && source venv/bin/activate
 Install the requirements and run the script in your console:
 
 ``` console
-pip install --upgrade pip && pip install -r requirements_for_linux.txt
+pip install --upgrade pip && pip install -r requirements.txt
 python main.py
 ```
 
