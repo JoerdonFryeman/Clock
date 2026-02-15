@@ -9,7 +9,7 @@ Download [latest release](https://github.com/JoerdonFryeman/Clock/releases/tag/C
 
 In Linux, run ```Clock_v1.0.7.app``` in the terminal with the command:
 ```console
-cd /home/your_directories.../Clock_v1.0.7/Linux/ && ./Clock_v1.0.7.app
+cd /home/your_directories.../Clock_v1.0.7/Linux/ && ./Clock_v1.0.7
 ```
 In Windows, run ```Clock_v1.0.7.exe```
 
