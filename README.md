@@ -20,13 +20,13 @@ Image [latest release](https://hub.docker.com/r/joerdonfryeman/clock).
 Run with attached standard streams (interactive terminal):
 
 ```console
-docker run -it joerdonfryeman/clock:1.0.7
+docker run -it joerdonfryeman/clock:1.0.8
 ```
 
 Same with automatic container removal after exit:
 
 ```console
-docker run --rm -it joerdonfryeman/clock:1.0.7
+docker run --rm -it joerdonfryeman/clock:1.0.8
 ```
 
 ## Requirements
