@@ -51,7 +51,7 @@ class RunProgram(Additionally):
         function(stdscr)
         stdscr.refresh()
         elapsed_time: float = time() - start_time
-        time_to_sleep: float = self.fps / 100 - elapsed_time
+        time_to_sleep: float = 1.0 / max(1, self.fps) - elapsed_time
         if time_to_sleep > 0:
             sleep(time_to_sleep)
 
