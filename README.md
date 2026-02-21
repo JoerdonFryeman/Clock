@@ -85,7 +85,7 @@ Some program settings can be specified in the clock_config.json file.
 
 - You can change the color of the clock, logo, or system info: BLACK, BLUE, CYAN, GREEN, MAGENTA, RED, WHITE, YELLOW.
 - With true or false enable or disable clock or system and temperature info (temperature info is only available on Linux).
-- Change the system info language to Russian “ru” or English “en”.
+- Set the system info language to Russian "ru" or English "en".
 - Create your own logo (13x31), add it to the logos.json file and enter its name in the clock_config.json file in the "logo_name" key.
 
 The default settings can be restored by deleting the clock_config.json file and restarting the program.
