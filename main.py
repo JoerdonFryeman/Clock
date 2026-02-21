@@ -22,16 +22,16 @@ def main(name: str, version: str, year: int) -> None:
         run.create_directories()
         run.get_logging_data()
         run.log_app_release(name=name, version=version, year=year)
-        run.logger.info('The application has been started.')
+        run.logger.info('Приложение запущено.')
         run.create_wrapped_threads()
         while getattr(run, 'running', True):
             sleep(0.1)
-        run.logger.info('The application has been stopped.')
+        run.logger.info('Приложение остановлено.')
     except Exception as e:
         run.logger.error(f'Проверка выдала ошибку: {e}\nЕсли не был выполнен выход в терминал, нажми Enter.')
         try:
             run.running = False
-            run.logger.info('The application has been stopped.')
+            run.logger.info('Приложение остановлено.')
         except Exception:
             run.logger.exception(
                 'Не удалось корректно остановить приложение!\nЕсли не был выполнен выход в терминал, нажми Enter.'
