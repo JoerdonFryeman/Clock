@@ -5,13 +5,13 @@ A simple console retro clock with system and temperature information.
 ![Clock](https://github.com/user-attachments/assets/3dd15196-6276-46f2-82f5-7b5a6a9c6652)
 
 ## Startup
-Download [latest release](https://github.com/JoerdonFryeman/Clock/releases/tag/Clock_v1.0.7).
+Download [latest release](https://github.com/JoerdonFryeman/Clock/releases/tag/Clock_v1.0.8).
 
-In Linux, run ```Clock_v1.0.7.app``` in the terminal with the command:
+In Linux, run ```Clock_v1.0.8``` in the terminal with the command:
 ```console
-cd /home/your_directories.../Clock_v1.0.7/Linux/ && ./Clock_v1.0.7
+cd /home/your_directories.../Clock_v1.0.8/Linux/ && ./Clock_v1.0.8
 ```
-In Windows, run ```Clock_v1.0.7.exe```
+In Windows, run ```Clock_v1.0.8.exe```
 
 ## Docker
 
