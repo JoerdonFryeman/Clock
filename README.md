@@ -31,7 +31,7 @@ docker run --rm -it joerdonfryeman/clock:1.0.8
 
 ## Requirements
 
-- Python: >= 3.14
+- Python: >= 3.11
 - psutil: >= 7.2.2
 - windows-curses: >= 2.4.1a1 (for Windows)
 - The application was developed for Arch Linux with the KDE Plasma desktop environment, but should work in other distributions as well as with limitations in Windows.

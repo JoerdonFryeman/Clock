@@ -99,7 +99,6 @@ class Visualisation(Base):
             self.logger.error('%s (доступные: %s)', error_message, ', '.join(colors_dict.keys()))
             raise KeyError(error_message)
         for i, color_name in enumerate(colors_dict.keys()):
-            use_default_colors()
             init_pair(1 + i, self.verify_color(color_name), -1)
         if a_bold:
             return color_pair(colors_dict[color]) | A_BOLD

@@ -6,13 +6,13 @@ from json import load, dump, JSONDecodeError
 
 class Base:
     __slots__ = (
-        'logger', 'clock_config', 'variables', 'digits_color', 'info_color',
+        'logger', 'config', 'variables', 'digits_color', 'info_color',
         'logo_color', 'clock', 'system_info', 'language', 'logo_name'
     )
 
     def __init__(self):
         self.logger = getLogger()
-        self.clock_config = {
+        self.config = {
             "digits_color": "MAGENTA",
             "system_info_color": "GREEN",
             "logo_color": "BLUE",
@@ -21,7 +21,7 @@ class Base:
             "language": "ru",
             "logo_name": ""
         }
-        self.variables = self.get_config_data('clock_config')
+        self.variables = self.get_config_data('config')
         try:
             self.digits_color = self.variables['digits_color']
             self.info_color = self.variables['system_info_color']
@@ -98,8 +98,8 @@ class Base:
         try:
             return self.get_json_data('config_files', config_name)
         except FileNotFoundError:
-            self.save_json_data('config_files', config_name, self.clock_config)
-            return self.clock_config
+            self.save_json_data('config_files', config_name, self.config)
+            return self.config
         except JSONDecodeError:
             print(f'\nJSONDecodeError! Файл «{config_name}.json» поврежден или не является корректным JSON!')
             return None

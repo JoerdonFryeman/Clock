@@ -19,7 +19,7 @@ class Additionally(Clock, Info, Temperature):
 
     def renew(self):
         """Обновляет необходимые атрибуты."""
-        self.variables = self.get_config_data('clock_config')
+        self.variables = self.get_config_data('config')
         self.digits_color = self.variables['digits_color']
         self.info_color = self.variables['system_info_color']
         self.logo_color = self.variables['logo_color']
