@@ -39,4 +39,4 @@ def main(name: str, version: str, year: int) -> None:
 
 
 if __name__ == '__main__':
-    main('Clock', '1.0.8', 2026)
+    main('Clock', '1.0.9', 2026)

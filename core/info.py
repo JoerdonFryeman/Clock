@@ -57,7 +57,7 @@ class Info(Visualisation):
         """Метод отображает название проекта на экране."""
         try:
             name: str = f'{self.format_date()} | ЭЛЕКТРОНИКА 54'
-            version: str = 'Clock (version 1.0.8)'
+            version: str = 'Clock (version 1.0.9)'
             copy_right: str = 'MIT License, (c) 2026 Joerdon Fryeman'
             stdscr.addstr(self.name_y, self.name_x, name, self.paint(self.digits_color, False))
             stdscr.addstr(self.version_y, self.version_x, version, self.paint(self.info_color, False))
