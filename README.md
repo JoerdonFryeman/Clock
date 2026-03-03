@@ -5,13 +5,13 @@ A simple console retro clock with system and temperature information.
 ![Clock](https://github.com/user-attachments/assets/3dd15196-6276-46f2-82f5-7b5a6a9c6652)
 
 ## Startup
-Download [latest release](https://github.com/JoerdonFryeman/Clock/releases/tag/Clock_v1.0.8).
+Download [latest release](https://github.com/JoerdonFryeman/Clock/releases/tag/Clock_v1.0.9).
 
-In Linux, run ```Clock_v1.0.8``` in the terminal with the command:
+In Linux, run ```Clock_v1.0.9``` in the terminal with the command:
 ```console
-cd /home/your_directories.../Clock_v1.0.8/Linux/ && ./Clock_v1.0.8
+cd /home/your_directories.../Clock_v1.0.9/Linux/ && ./Clock_v1.0.9
 ```
-In Windows, run ```Clock_v1.0.8.exe```
+In Windows, run ```Clock_v1.0.9.exe```
 
 ## Docker
 
@@ -20,13 +20,13 @@ Image [latest release](https://hub.docker.com/r/joerdonfryeman/clock).
 Run with attached standard streams (interactive terminal):
 
 ```console
-docker run -it joerdonfryeman/clock:1.0.8
+docker run -it joerdonfryeman/clock:1.0.9
 ```
 
 Same with automatic container removal after exit:
 
 ```console
-docker run --rm -it joerdonfryeman/clock:1.0.8
+docker run --rm -it joerdonfryeman/clock:1.0.9
 ```
 
 ## Requirements
@@ -81,14 +81,14 @@ Just press Enter or try any other key.
 
 ## Settings
 
-Some program settings can be specified in the clock_config.json file.
+Some program settings can be specified in the config.json file.
 
 - You can change the color of the clock, logo, or system info: BLACK, BLUE, CYAN, GREEN, MAGENTA, RED, WHITE, YELLOW.
 - With true or false enable or disable clock or system and temperature info (temperature info is only available on Linux).
 - Set the system info language to Russian "ru" or English "en".
-- Create your own logo (13x31), add it to the logos.json file and enter its name in the clock_config.json file in the "logo_name" key.
+- Create your own logo (13x31), add it to the logos.json file and enter its name in the config.json file in the "logo_name" key.
 
-The default settings can be restored by deleting the clock_config.json file and restarting the program.
+The default settings can be restored by deleting the config.json file and restarting the program.
 
 ## License
 
