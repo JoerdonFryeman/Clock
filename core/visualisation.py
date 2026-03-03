@@ -70,39 +70,38 @@ class Visualisation(Base):
                 pass
 
     @staticmethod
-    def verify_color(color) -> object | int:
+    def verify_color(color: str) -> int:
         """Метод проверяет настройку цвета из конфигурации."""
         color_map: dict[str, int] = {
             'BLACK': COLOR_BLACK, 'BLUE': COLOR_BLUE, 'CYAN': COLOR_CYAN, 'GREEN': COLOR_GREEN,
             'MAGENTA': COLOR_MAGENTA, 'RED': COLOR_RED, 'WHITE': COLOR_WHITE, 'YELLOW': COLOR_YELLOW,
         }
-        return color_map.get(color, COLOR_WHITE)
+        return color_map.get(color.upper(), COLOR_WHITE)
 
     @staticmethod
     def init_curses(stdscr) -> None:
         """Инициализирует экран curses"""
         stdscr.clear()
         stdscr.refresh()
-        curs_set(False)
+        curs_set(0)
         if has_colors():
             use_default_colors()
             start_color()
 
     def paint(self, color: str, a_bold: bool) -> int:
-        """Метод раскрашивает текст или текстовое изображение."""
-        colors_dict: dict[str, int] = {
-            'MAGENTA': 1, 'BLUE': 2, 'CYAN': 3, 'GREEN': 4,
-            'YELLOW': 5, 'RED': 6, 'WHITE': 7, 'BLACK': 8
-        }
-        if color not in colors_dict:
+        colors = ('MAGENTA', 'BLUE', 'CYAN', 'GREEN', 'YELLOW', 'RED', 'WHITE', 'BLACK')
+        for i in range(1, len(colors) + 1):
+            init_pair(i, self.verify_color(colors[i - 1]), -1)
+        try:
+            pair_index = colors.index((color or '').upper()) + 1
+        except (ValueError, AttributeError):
             error_message = f'Цвет "{color}" не найден в доступных цветах.'
-            self.logger.error('%s (доступные: %s)', error_message, ', '.join(colors_dict.keys()))
+            self.logger.error('%s (доступные: %s)', error_message, ', '.join(colors))
             raise KeyError(error_message)
-        for i, color_name in enumerate(colors_dict.keys()):
-            init_pair(1 + i, self.verify_color(color_name), -1)
+        attribute = color_pair(pair_index)
         if a_bold:
-            return color_pair(colors_dict[color]) | A_BOLD
-        return color_pair(colors_dict[color])
+            attribute |= A_BOLD
+        return attribute
 
     def get_info_list(self, function) -> list[str]:
         """Метод получает список строковой информации на основе переданной функции."""

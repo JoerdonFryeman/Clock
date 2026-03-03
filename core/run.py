@@ -45,16 +45,6 @@ class RunProgram(Additionally):
         self.running = True
         self.fps = 10
 
-    def build_app(self, stdscr, function) -> None:
-        """Создаёт потоки для каждого уровня полосы."""
-        start_time: float = time()
-        function(stdscr)
-        stdscr.refresh()
-        elapsed_time: float = time() - start_time
-        time_to_sleep: float = 1.0 / max(1, self.fps) - elapsed_time
-        if time_to_sleep > 0:
-            sleep(time_to_sleep)
-
     def wait_for_enter(self, stdscr) -> None:
         """Ждёт нажатия клавиши и устанавливает флаг остановки."""
         stdscr.getch()
@@ -63,7 +53,13 @@ class RunProgram(Additionally):
     def create_main_loop(self, stdscr, function) -> None:
         """Запускает все модули программы в цикле."""
         while self.running:
-            self.build_app(stdscr, function)
+            start_time: float = time()
+            function(stdscr)
+            stdscr.refresh()
+            elapsed_time: float = time() - start_time
+            time_to_sleep: float = 1.0 / max(1, self.fps) - elapsed_time
+            if time_to_sleep > 0:
+                sleep(time_to_sleep)
 
     def create_wrapped_threads(self) -> None:
         """Запускает потоки для выполнения модулей в зависимости от наличия системной информации."""
