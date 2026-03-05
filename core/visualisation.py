@@ -89,6 +89,7 @@ class Visualisation(Base):
             start_color()
 
     def paint(self, color: str, a_bold: bool) -> int:
+        """Раскрашивает текст или текстовое изображение."""
         colors = ('MAGENTA', 'BLUE', 'CYAN', 'GREEN', 'YELLOW', 'RED', 'WHITE', 'BLACK')
         for i in range(1, len(colors) + 1):
             init_pair(i, self.verify_color(colors[i - 1]), -1)
